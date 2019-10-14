@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.MainViewController">
+   <children>
+      <VBox prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Parts" />
+            <Button mnemonicParsing="false" onAction="#ButtonSearchParts" text="Search" />
+            <TextField fx:id="PartsSearch" onAction="#ButtonSearchParts" />
+            <TableView fx:id="Parts" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="PartId" prefWidth="75.0" text="id" />
+                <TableColumn fx:id="PartName" prefWidth="75.0" text="name" />
+                  <TableColumn fx:id="PartStock" prefWidth="75.0" text="stock" />
+                  <TableColumn fx:id="PartPrice" prefWidth="75.0" text="price" />
+              </columns>
+            </TableView>
+            <Button mnemonicParsing="false" onAction="#ButtonAddPart" text="Add" />
+            <Button mnemonicParsing="false" onAction="#ButtonModifyPart" text="Modify" />
+            <Button mnemonicParsing="false" onAction="#ButtonDeletePart" text="Delete" />
+         </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Products" />
+            <Button mnemonicParsing="false" onAction="#ButtonSearchProducts" text="Search" />
+            <TextField fx:id="ProductsSearch" onAction="#ButtonSearchProducts" />
+            <TableView fx:id="Products" prefHeight="200.0" prefWidth="200.0">
+               <columns>
+                  <TableColumn fx:id="ProductId" prefWidth="75.0" text="id" />
+                  <TableColumn fx:id="ProductName" prefWidth="75.0" text="name" />
+                  <TableColumn fx:id="ProductStock" prefWidth="75.0" text="stock" />
+                  <TableColumn fx:id="ProductPrice" prefWidth="75.0" text="price" />
+               </columns>
+            </TableView>
+            <Button mnemonicParsing="false" onAction="#ButtonAddProduct" text="Add" />
+            <Button mnemonicParsing="false" onAction="#ButtonModifyProduct" text="Modify" />
+            <Button mnemonicParsing="false" onAction="#ButtonDeleteProduct" text="Delete" />
+         </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

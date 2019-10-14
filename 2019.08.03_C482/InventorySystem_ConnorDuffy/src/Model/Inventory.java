@@ -1,0 +1,167 @@
+
+package Model;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+/**
+ *
+ * @author cjd
+ */
+public class Inventory {
+    
+    private ObservableList<Part> allParts;
+    private ObservableList<Product> allProducts;
+    
+
+    /**
+     * Adds a new part to the ObservableList allParts to create new items in 
+     * the parts inventory
+     * 
+     * @param newPart the Part to be added to the allParts list
+     */
+    public void addPart(Part newPart){
+        this.allParts.add(newPart);
+    }
+    
+    
+    /**
+     * Searches for the int partId via the index of the ObservableList allParts
+     * and Returns the elements from the ObservableList for review of the 
+     * current information of a part.
+     * 
+     * @param partID int the part id to search in the observable list
+     * @return returns the element from the ObservableList allParts
+     */
+    public Part lookupPart(int partID){
+        return this.allParts.get(partID);
+    }
+    
+    
+    /**
+     * Searches the ObservableList allParts by a parts name to return the 
+     * elements of the list to review the current information of a part.
+     * 
+     * @param partName the part name provided as a string
+     * @return returns the part element from the ObservableList allParts
+     */
+    public ObservableList<Part> lookupPart(String partName){
+        ObservableList<Part> result = FXCollections.observableArrayList();
+        for (Part part : this.allParts) {
+            if (part.getName().contains(partName)){
+                result.add(part);
+            }
+        }
+        return result;
+    }
+    
+    
+    /**
+     * Updates the part in the ObservableList allParts in order to correct or
+     * update inventory parts by utilizing the index of the part in the ObservableList
+     * and the new Part information via the selectPart
+     * 
+     * @param index the index of the part to modify
+     * @param selectedPart the part information that is being updated
+     */
+    public void updatePart(int index, Part selectedPart){
+        //TODO: may need to add an option to delete the 'old part'
+        this.allParts.add(index, selectedPart);
+    }
+    
+    /**
+     * Deletes the part in the ObservableList allParts from the 
+     * input of the Part selectedPart
+     * 
+     * @param selectedPart the Part object to delete from the ObservableList allParts
+     */
+    public void deletePart(Part selectedPart){
+        this.allParts.remove(selectedPart);
+    }
+    
+    /**
+     * Returns the ObservableList of all parts in the allParts ObservableList
+     * 
+     * @return returns the allParts ObservableList
+     */
+    public ObservableList<Part> getAllParts(){
+        return this.allParts;
+    }
+    
+    
+    /**
+     * Adds a new product from the incoming Product (newProduct) to the
+     * ObservableList allProducts
+     * 
+     * @param newProduct input of the new Product being created
+     */
+    public void addProduct(Product newProduct){
+        this.allProducts.add(newProduct);
+    }
+    
+    
+    /**
+     * Searches for the int product Id via the index of the ObservableList 
+     * allProducts returning the element of the ObservableList
+     * 
+     * @param productId the product Id for the index of the ObservableList allProducts 
+     * @return returns the ObservableList Product element by the index of the productId
+     */
+    public Product lookupProduct(int productId){
+        return this.allProducts.get(productId);
+    }
+    
+    
+    /**
+     * Searches for the name of a product in the ObservableList allProducts 
+     * returning the elements of the matching products for review of the 
+     * products
+     * 
+     * @param productName input of the String for the product Name
+     * @return returns an ObservableList for the elements in the allProducts list
+     */
+    public ObservableList<Product> lookupProduct(String productName){
+        ObservableList<Product> result = FXCollections.observableArrayList();
+        for (Product product : this.allProducts) {
+            if (product.getName().contains(productName)){
+                result.add(product);
+            }
+        }
+        return result;
+    }
+
+    
+    /**
+     * Updates the products in the ObservableList allProducts in order to 
+     * correct or update inventory products by utilizing the index of the part
+     * in the ObservableList and the new Product information via the 
+     * selectedProduct
+     * 
+     * @param index the index of the Product in the allProducts ObservableList
+     * @param selectedProduct the new Product information
+     */
+    public void updateProduct(int index, Product selectedProduct){
+        this.allProducts.add(index, selectedProduct);
+    }
+    
+    /**
+     * Deletes the input object of the selected Product from the 
+     * observableList allProducts
+     * 
+     * @param selectedProduct in inputed Product to delete
+     */
+    public void deleteProduct(Product selectedProduct){
+        this.allProducts.remove(selectedProduct);
+    }
+    
+    /**
+     * Returns all of the products from the ObservableList all products for 
+     * review 
+     * 
+     * @return returns the ObservableList allProducts
+     */
+    public ObservableList<Product> getAllProducts(){
+        return this.allProducts;
+    }
+    
+}
