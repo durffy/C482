@@ -5,9 +5,16 @@
  */
 package ViewController;
 
+import Model.InHouse;
+import Model.Inventory;
+import Model.Part;
+import Model.Product;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -26,31 +34,31 @@ import javafx.stage.Stage;
  * @author cjd
  */
 public class MainViewController implements Initializable {
+    
 
+    public static Inventory inventory;
+   
+      
     //Part FXIDs
-    @FXML private TableView Parts;
-    @FXML private TableColumn PartId;
-    @FXML private TableColumn PartName;
-    @FXML private TableColumn PartStock;
-    @FXML private TableColumn PartPrice;
+    @FXML private TableView<Part> PartsTable = new TableView<>();
+    @FXML private TableColumn<Part, Integer> PartId = new TableColumn<>("partId");
+    @FXML private TableColumn<Part, String> PartName = new TableColumn<>("partName");
+    @FXML private TableColumn<Part, Integer> PartStock = new TableColumn<>("partStock");
+    @FXML private TableColumn<Part, Double> PartPrice = new TableColumn<>("partPrice");
     
     @FXML private TextField PartsSearch;
     
     
     
     //Product FXIDs
-    @FXML private TableView Products;
-    @FXML private TableColumn ProductId;
-    @FXML private TableColumn ProductName;
-    @FXML private TableColumn ProductStock;
-    @FXML private TableColumn ProductPrice;
+    @FXML private TableView<Product> ProductsTable;
+    @FXML private TableColumn<Product, Integer> ProductId;
+    @FXML private TableColumn<Product, String> ProductName;
+    @FXML private TableColumn<Product, Integer> ProductStock;
+    @FXML private TableColumn<Product, Double> ProductPrice;
     
     @FXML private TextField ProductsSearch;
-    
-    
-    
-    
-    
+
     
     
     /*
@@ -82,10 +90,6 @@ public class MainViewController implements Initializable {
     public void ButtonDeletePart(ActionEvent event){
         //TODO
     }
-    
-    
-    
-    
     
     
     
@@ -121,10 +125,6 @@ public class MainViewController implements Initializable {
     
     
     
-    
-    
-    
-    
     /**
      * Initializes the controller class.
      * @param url
@@ -132,7 +132,23 @@ public class MainViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+        
+     
+        PartId.setCellValueFactory(new PropertyValueFactory<>("colPartId"));
+        PartName.setCellValueFactory(new PropertyValueFactory<>("colPartName"));
+        PartStock.setCellValueFactory(new PropertyValueFactory<>("colPartStock"));
+        PartPrice.setCellValueFactory(new PropertyValueFactory<>("colPartPrice"));
+
+        PartsTable.setItems(inventory.allParts);
+        
+       
+        ProductId.setCellValueFactory(new PropertyValueFactory<>("colProductId"));
+        ProductName.setCellValueFactory(new PropertyValueFactory<>("colProductName"));
+        ProductStock.setCellValueFactory(new PropertyValueFactory<>("colProductStock"));
+        ProductPrice.setCellValueFactory(new PropertyValueFactory<>("colProductPrice"));
+        
+        ProductsTable.setItems(inventory.allProducts);
+        
+        
+    }
 }
