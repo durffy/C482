@@ -5,6 +5,12 @@
  */
 package ViewController;
 
+import Model.Inventory;
+import Model.InHouse;
+import Model.Outsourced;
+import Model.Part;
+import Model.Part;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,6 +26,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+
 
 /**
  * FXML Controller class
@@ -42,18 +49,16 @@ public class AddPartViewController implements Initializable {
     
     @FXML private Label LabelSoruceID;
 
-
-
-
-
-
+    private boolean InHouse = true;
     
     public void RadioButtonInHousePressed(){
-        
+        LabelSoruceID.setText("Machine Id");
+        InHouse = true;
     }
     
     public void RadioButtonOutsourcedPressed(){
-        
+        LabelSoruceID.setText("Company Name");
+        InHouse = false;
     }
     
     public void ButtonCancel(ActionEvent event) throws IOException{
@@ -68,7 +73,25 @@ public class AddPartViewController implements Initializable {
     
     public void ButtonAdd(ActionEvent event) throws IOException{
         //TODO: add method call, object reference, and logic
-                        
+        
+        String name = FieldName.getText();
+        int id = Integer.parseInt(FieldID.getText());
+        int stock = Integer.parseInt(FieldStock.getText());
+        double price = Double.parseDouble(FieldPrice.getText());
+        int min = Integer.parseInt(FieldMin.getText());
+        int max = Integer.parseInt(FieldMax.getText());
+        String sourceId = FieldSourceID.getText();
+        
+        if(InHouse){
+            int sid = Integer.parseInt(sourceId);
+            Part p = new InHouse(id, name, price, stock, min, max, sid);
+            Inventory.allParts.add(p);
+        }else if(!InHouse){
+            
+            Part p = new Outsourced(id, name, price, stock, min, max, sourceId);
+            Inventory.allParts.add(p);
+        }
+                
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -76,20 +99,17 @@ public class AddPartViewController implements Initializable {
         window.show();
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
+        LabelSoruceID.setText("Machine Id");
     }    
     
 }
