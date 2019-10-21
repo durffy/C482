@@ -11,10 +11,11 @@ import Model.Part;
 import Model.Product;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -123,7 +125,30 @@ public class MainViewController implements Initializable {
         //TODO
     }
     
-    
+    private ObservableValue<Number> getIdColumnValue(CellDataFeatures<Part, Number> param) {
+        return new SimpleIntegerProperty(param.getValue().getId());
+    }
+
+    private ObservableValue<String> getNameColumnValue(CellDataFeatures<Part, String> param) {
+        return new SimpleStringProperty(param.getValue().getName());
+    }
+
+    private ObservableValue<Number> getPriceColumnValue(CellDataFeatures<Part, Number> param) {
+        return new SimpleDoubleProperty(param.getValue().getPrice());
+    }
+
+    private ObservableValue<Number> getStockColumnValue(CellDataFeatures<Part, Number> param) {
+        return new SimpleIntegerProperty(param.getValue().getStock());
+    }
+
+    private ObservableValue<Number> getMinColumnValue(CellDataFeatures<Part, Number> param) {
+        return new SimpleIntegerProperty(param.getValue().getMin());
+    }
+
+    private ObservableValue<Number> getMaxColumnValue(CellDataFeatures<Part, Number> param) {
+        return new SimpleIntegerProperty(param.getValue().getMax());
+    }
+
     
     /**
      * Initializes the controller class.
@@ -133,15 +158,22 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        for (int i = 0; i < 10; i++) {
+            Part part = new InHouse(i, String.valueOf(i), (double) i, i, i, i, i);
+            Inventory.allParts.add((InHouse) part);
+
+            Product product = new Product(i, String.valueOf(i), (double) i, i, i, i);
+            Inventory.allProducts.add(product);
+        }
      
-        PartId.setCellValueFactory(new PropertyValueFactory<>("colPartId"));
-        PartName.setCellValueFactory(new PropertyValueFactory<>("colPartName"));
-        PartStock.setCellValueFactory(new PropertyValueFactory<>("colPartStock"));
-        PartPrice.setCellValueFactory(new PropertyValueFactory<>("colPartPrice"));
+        PartId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
+        PartName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        PartStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
+        PartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
 
         PartsTable.setItems(inventory.allParts);
         
-       
+
         ProductId.setCellValueFactory(new PropertyValueFactory<>("colProductId"));
         ProductName.setCellValueFactory(new PropertyValueFactory<>("colProductName"));
         ProductStock.setCellValueFactory(new PropertyValueFactory<>("colProductStock"));
