@@ -5,9 +5,14 @@
  */
 package ViewController;
 
+import Model.Inventory;
+import Model.Part;
+import static ViewController.MainViewController.inventory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,26 +25,30 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import static Model.Inventory.getAllParts;
+import static Model.Inventory.getAllProducts;
+import Model.Product;
+
 /**
  * FXML Controller class
  *
  * @author cjd
  */
 public class ModifyProductViewController implements Initializable {
-
+    
     
     @FXML private TextField PartSeach;
-    @FXML private TableView TablePartSearch;
-    @FXML private TableColumn PartSearchID;
-    @FXML private TableColumn PartSearchName;
-    @FXML private TableColumn PartSearchStock;
-    @FXML private TableColumn PartSearchPrice;
+    @FXML private TableView<Part> TablePartSearch;
+    @FXML private TableColumn<Part, Integer> PartSearchID;
+    @FXML private TableColumn<Part, String> PartSearchName;
+    @FXML private TableColumn<Part, Integer> PartSearchStock;
+    @FXML private TableColumn<Part, Double> PartSearchPrice;
     
-    @FXML private TableView ProductPart;
-    @FXML private TableColumn ProductPartID;
-    @FXML private TableColumn ProductPartName;
-    @FXML private TableColumn ProductPartStock;
-    @FXML private TableColumn ProductPartPrice;
+    @FXML private TableView<Part> ProductPart;
+    @FXML private TableColumn<Part, Integer> ProductPartID;
+    @FXML private TableColumn<Part, String> ProductPartName;
+    @FXML private TableColumn<Part, Integer> ProductPartStock;
+    @FXML private TableColumn<Part, Double> ProductPartPrice;
     
     @FXML private TextField ProductID;
     @FXML private TextField ProductName;
@@ -48,12 +57,9 @@ public class ModifyProductViewController implements Initializable {
     @FXML private TextField ProductMin;
     @FXML private TextField ProductMax;
     
+    private ObservableList<Part> ProductParts = FXCollections.observableArrayList();
     
-    
-    
-    
-    
-    
+
     
     public void ButtonCancel(ActionEvent event) throws IOException{
                 
@@ -78,9 +84,6 @@ public class ModifyProductViewController implements Initializable {
     
     
     
-    
-    
-    
     public void ButtonSearchPart(ActionEvent event) throws IOException{
         //TODO
     }
@@ -94,12 +97,7 @@ public class ModifyProductViewController implements Initializable {
     }
     
     
-    
-    
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      * @param url
@@ -107,7 +105,21 @@ public class ModifyProductViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Product product = getAllProducts().get(0);
+        
+        PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
+        PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
+        PartSearchPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
+        
+        TablePartSearch.setItems(Inventory.allParts);
+        
+        ProductPartID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
+        ProductPartName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        ProductPartStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
+        ProductPartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
+        
+        ProductPart.setItems(product.getAllAssociatedParts());
     }    
     
 }
