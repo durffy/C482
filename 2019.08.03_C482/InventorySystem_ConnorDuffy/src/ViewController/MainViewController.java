@@ -12,10 +12,7 @@ import Model.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +22,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -38,11 +34,11 @@ import javafx.stage.Stage;
 public class MainViewController implements Initializable {
           
     //Part FXIDs
-    @FXML private TableView<Part> PartsTable = new TableView<>();
-    @FXML private TableColumn<Part, Integer> PartId = new TableColumn<>("partId");
-    @FXML private TableColumn<Part, String> PartName = new TableColumn<>("partName");
-    @FXML private TableColumn<Part, Integer> PartStock = new TableColumn<>("partStock");
-    @FXML private TableColumn<Part, Double> PartPrice = new TableColumn<>("partPrice");
+    @FXML private TableView<Part> PartsTable;
+    @FXML private TableColumn<Part, Integer> PartId;
+    @FXML private TableColumn<Part, String> PartName;
+    @FXML private TableColumn<Part, Integer> PartStock;
+    @FXML private TableColumn<Part, Double> PartPrice;
     
     @FXML private TextField PartsSearch;
     
@@ -60,14 +56,18 @@ public class MainViewController implements Initializable {
     static boolean loaded = false;
     
     
+    
     /*
     
     NOTE: The following Methods are for Part Event Handling
     
     */
     public void ButtonSearchParts(ActionEvent event){
+        
         ObservableList<Part> part = Inventory.lookupPart(PartsSearch.getText());
+       
         PartsTable.setItems(part);
+        
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
@@ -75,7 +75,7 @@ public class MainViewController implements Initializable {
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
-        window.show(); 
+        window.show();
     }
     
     public void ButtonModifyPart(ActionEvent event) throws IOException{
@@ -92,7 +92,8 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event){
-        //TODO
+        Part part = PartsTable.getSelectionModel().getSelectedItem();
+        Inventory.deletePart(part);
     }
     
     
@@ -117,6 +118,7 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonModifyProduct(ActionEvent event) throws IOException{
+        
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyProductView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -136,12 +138,15 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        //loading initial data
         if(!loaded){
+            
             for (int i = 0; i < 10; i++) {
-                Part part = new InHouse(i, String.valueOf(i), (double) i, i, i, i, i);
+                Part part = new InHouse(i, "Part" + String.valueOf(i), (double) i, i, i, i, i);
                 Inventory.allParts.add((InHouse) part);
+                
+                Product product = new Product(i, "Product" + String.valueOf(i), (double) i, i, i, i);
 
-                Product product = new Product(i, String.valueOf(i), (double) i, i, i, i);
                 Inventory.allProducts.add(product);
             }
             loaded = true;
