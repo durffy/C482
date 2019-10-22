@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -36,11 +36,7 @@ import javafx.stage.Stage;
  * @author cjd
  */
 public class MainViewController implements Initializable {
-    
-
-    public static Inventory inventory;
-   
-      
+          
     //Part FXIDs
     @FXML private TableView<Part> PartsTable = new TableView<>();
     @FXML private TableColumn<Part, Integer> PartId = new TableColumn<>("partId");
@@ -61,6 +57,7 @@ public class MainViewController implements Initializable {
     
     @FXML private TextField ProductsSearch;
 
+    static boolean loaded = false;
     
     
     /*
@@ -69,8 +66,8 @@ public class MainViewController implements Initializable {
     
     */
     public void ButtonSearchParts(ActionEvent event){
-        //TODO
-        
+        ObservableList<Part> part = Inventory.lookupPart(PartsSearch.getText());
+        PartsTable.setItems(part);
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
@@ -82,11 +79,16 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonModifyPart(ActionEvent event) throws IOException{
+        Part part = PartsTable.getSelectionModel().getSelectedItem();
+        
+        ModifyPartViewController.PartIndex = part.getId();
+        
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyPartView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+        
     }
     
     public void ButtonDeletePart(ActionEvent event){
@@ -101,7 +103,8 @@ public class MainViewController implements Initializable {
     
     */ 
     public void ButtonSearchProducts(ActionEvent event){
-        //TODO
+        ObservableList<Product> product = Inventory.lookupProduct(ProductsSearch.getText());
+        ProductsTable.setItems(product);
     }
     
     public void ButtonAddProduct(ActionEvent event) throws IOException{
@@ -125,31 +128,6 @@ public class MainViewController implements Initializable {
         //TODO
     }
     
-    private ObservableValue<Number> getIdColumnValue(CellDataFeatures<Part, Number> param) {
-        return new SimpleIntegerProperty(param.getValue().getId());
-    }
-
-    private ObservableValue<String> getNameColumnValue(CellDataFeatures<Part, String> param) {
-        return new SimpleStringProperty(param.getValue().getName());
-    }
-
-    private ObservableValue<Number> getPriceColumnValue(CellDataFeatures<Part, Number> param) {
-        return new SimpleDoubleProperty(param.getValue().getPrice());
-    }
-
-    private ObservableValue<Number> getStockColumnValue(CellDataFeatures<Part, Number> param) {
-        return new SimpleIntegerProperty(param.getValue().getStock());
-    }
-
-    private ObservableValue<Number> getMinColumnValue(CellDataFeatures<Part, Number> param) {
-        return new SimpleIntegerProperty(param.getValue().getMin());
-    }
-
-    private ObservableValue<Number> getMaxColumnValue(CellDataFeatures<Part, Number> param) {
-        return new SimpleIntegerProperty(param.getValue().getMax());
-    }
-
-    
     /**
      * Initializes the controller class.
      * @param url
@@ -158,12 +136,15 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        for (int i = 0; i < 10; i++) {
-            Part part = new InHouse(i, String.valueOf(i), (double) i, i, i, i, i);
-            Inventory.allParts.add((InHouse) part);
+        if(!loaded){
+            for (int i = 0; i < 10; i++) {
+                Part part = new InHouse(i, String.valueOf(i), (double) i, i, i, i, i);
+                Inventory.allParts.add((InHouse) part);
 
-            Product product = new Product(i, String.valueOf(i), (double) i, i, i, i);
-            Inventory.allProducts.add(product);
+                Product product = new Product(i, String.valueOf(i), (double) i, i, i, i);
+                Inventory.allProducts.add(product);
+            }
+            loaded = true;
         }
      
         PartId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
@@ -171,15 +152,15 @@ public class MainViewController implements Initializable {
         PartStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         PartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
 
-        PartsTable.setItems(inventory.allParts);
+        PartsTable.setItems(Inventory.getAllParts());
         
 
-        ProductId.setCellValueFactory(new PropertyValueFactory<>("colProductId"));
-        ProductName.setCellValueFactory(new PropertyValueFactory<>("colProductName"));
-        ProductStock.setCellValueFactory(new PropertyValueFactory<>("colProductStock"));
-        ProductPrice.setCellValueFactory(new PropertyValueFactory<>("colProductPrice"));
+        ProductId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
+        ProductName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        ProductStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
+        ProductPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-        ProductsTable.setItems(inventory.allProducts);
+        ProductsTable.setItems(Inventory.getAllProducts());
         
         
     }
