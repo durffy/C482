@@ -88,8 +88,8 @@ public class Inventory {
         selectedPart.setPrice(0.0);
         selectedPart.setStock(0);
         
+        allParts.set(selectedPart.getId(), selectedPart);
 
-        allParts.remove(selectedPart);
     }
     
     /**
