@@ -82,6 +82,13 @@ public class Inventory {
      * @param selectedPart the Part object to delete from the ObservableList allParts
      */
     public static void deletePart(Part selectedPart){
+        selectedPart.setName("Deleted");
+        selectedPart.setMax(0);
+        selectedPart.setMin(0);
+        selectedPart.setPrice(0.0);
+        selectedPart.setStock(0);
+        
+
         allParts.remove(selectedPart);
     }
     
