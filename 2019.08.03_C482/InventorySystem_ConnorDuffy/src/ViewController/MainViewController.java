@@ -127,7 +127,8 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeleteProduct(ActionEvent event){
-        //TODO
+        Product product = ProductsTable.getSelectionModel().getSelectedItem();
+        Inventory.deleteProduct(product);
     }
     
     /**
