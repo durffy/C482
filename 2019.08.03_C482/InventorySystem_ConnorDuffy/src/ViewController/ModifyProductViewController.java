@@ -7,7 +7,6 @@ package ViewController;
 
 import Model.Inventory;
 import Model.Part;
-import static ViewController.MainViewController.inventory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,8 +24,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import static Model.Inventory.getAllParts;
-import static Model.Inventory.getAllProducts;
 import Model.Product;
 
 /**
@@ -58,7 +55,8 @@ public class ModifyProductViewController implements Initializable {
     @FXML private TextField ProductMax;
     
     private ObservableList<Part> ProductParts = FXCollections.observableArrayList();
-    
+    private int ProductIndex;
+
 
     
     public void ButtonCancel(ActionEvent event) throws IOException{
@@ -105,7 +103,7 @@ public class ModifyProductViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Product product = getAllProducts().get(0);
+        Product product = Inventory.lookupProduct(ProductIndex);
         
         PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
