@@ -164,7 +164,13 @@ public class Inventory {
      * @param selectedProduct in inputed Product to delete
      */
     public static void deleteProduct(Product selectedProduct){
-        allProducts.remove(selectedProduct);
+        selectedProduct.setName("Deleted");
+        selectedProduct.setMax(0);
+        selectedProduct.setMin(0);
+        selectedProduct.setPrice(0.0);
+        selectedProduct.setStock(0);
+        
+        allProducts.set(selectedProduct.getId(), selectedProduct);
     }
     
     /**
