@@ -55,6 +55,7 @@ public class ModifyProductViewController implements Initializable {
     @FXML private TextField ProductMax;
     
     private ObservableList<Part> ProductParts = FXCollections.observableArrayList();
+    private Product ModProduct;
     private int ProductIndex;
 
 
@@ -71,7 +72,8 @@ public class ModifyProductViewController implements Initializable {
     
     public void ButtonSaveProduct(ActionEvent event) throws IOException{
         //TODO: add method call, object reference, and logic
-                        
+        ModProduct.associatedParts.setAll(ProductParts);
+        
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -87,7 +89,7 @@ public class ModifyProductViewController implements Initializable {
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
-        //TODO
+        ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
@@ -103,8 +105,9 @@ public class ModifyProductViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Product product = Inventory.lookupProduct(ProductIndex);
-        
+        ModProduct = Inventory.lookupProduct(ProductIndex);
+        ProductParts.addAll(ModProduct.getAllAssociatedParts());
+                
         PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
@@ -117,7 +120,7 @@ public class ModifyProductViewController implements Initializable {
         ProductPartStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         ProductPartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-        ProductPart.setItems(product.getAllAssociatedParts());
+        ProductPart.setItems(ProductParts);
     }    
     
 }
