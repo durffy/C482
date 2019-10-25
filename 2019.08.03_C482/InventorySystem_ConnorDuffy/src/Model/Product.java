@@ -124,6 +124,12 @@ public class Product {
         return associatedParts;
     }
 
+    /**
+     * Adds parts to the Associated parts list if they do not already exist
+     * in the Associated Parts list
+     * 
+     * @param parts an ObservableList<Part>
+     */
     public static void addAssociatedParts(ObservableList<Part> parts) {
         for(Part part : parts){
             if(!associatedParts.contains(part)){
