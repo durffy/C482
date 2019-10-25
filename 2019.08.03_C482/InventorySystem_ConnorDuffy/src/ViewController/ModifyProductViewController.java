@@ -56,7 +56,7 @@ public class ModifyProductViewController implements Initializable {
     
     private ObservableList<Part> ProductParts = FXCollections.observableArrayList();
     private Product ModProduct;
-    private int ProductIndex;
+    static int ProductIndex;
 
 
     
@@ -71,8 +71,8 @@ public class ModifyProductViewController implements Initializable {
     }
     
     public void ButtonSaveProduct(ActionEvent event) throws IOException{
-        //TODO: add method call, object reference, and logic
-        ModProduct.associatedParts.setAll(ProductParts);
+        
+        ModProduct.addAssociatedParts(ProductParts);
         
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         Scene scene = new Scene(root);
