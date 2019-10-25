@@ -7,9 +7,12 @@ package ViewController;
 
 import Model.InHouse;
 import Model.Inventory;
+import Model.Outsourced;
 import Model.Part;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +49,7 @@ public class ModifyPartViewController implements Initializable {
     @FXML private Label LabelSoruceID;
     
     static int PartIndex;
+    private Part ModPart;
     
     public void RadioButtonInHousePressed(){
         
@@ -65,9 +69,21 @@ public class ModifyPartViewController implements Initializable {
         
     }
     
-    public void ButtonAdd(ActionEvent event) throws IOException{
+    public void ButtonSave(ActionEvent event) throws IOException{
         //TODO: add method call, object reference, and logic
-                        
+        
+        ModPart.setName(FieldName.getText());
+        ModPart.setStock(Integer.parseInt(FieldStock.getText()));
+        ModPart.setPrice(Double.parseDouble(FieldPrice.getText()));
+        ModPart.setMin(Integer.parseInt(FieldMin.getText()));
+        ModPart.setMax(Integer.parseInt(FieldMax.getText()));
+        
+        if(ModPart instanceof InHouse){
+            //ModPart.setMachineId(Integer.parseInt(FieldSourceID.getText()));
+        }if(ModPart instanceof Outsourced){
+            //ModPart.setCompanyName(FieldSourceID.getText());
+        }
+        
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -88,15 +104,20 @@ public class ModifyPartViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        //todo: add object type check here
-        Part part = Inventory.lookupPart(PartIndex);
-        FieldID.setText(Integer.toString(part.getId()));
-        FieldName.setText(part.getName());
-        FieldStock.setText(Integer.toString(part.getStock()));
-        FieldPrice.setText(Double.toString(part.getPrice()));
-        FieldMin.setText(Integer.toString(part.getMin()));
-        FieldMax.setText(Integer.toString(part.getMax()));
-        //FieldSourceID.setText(Integer.toString(part.getI)); 
+        ModPart = Inventory.lookupPart(PartIndex);
+        FieldID.setText(Integer.toString(ModPart.getId()));
+        FieldName.setText(ModPart.getName());
+        FieldStock.setText(Integer.toString(ModPart.getStock()));
+        FieldPrice.setText(Double.toString(ModPart.getPrice()));
+        FieldMin.setText(Integer.toString(ModPart.getMin()));
+        FieldMax.setText(Integer.toString(ModPart.getMax()));
+        
+        if(ModPart instanceof InHouse){
+            FieldSourceID.setText(Integer.toString(((InHouse) ModPart).getMachineId()));
+        }if(ModPart instanceof Outsourced){
+            FieldSourceID.setText(((Outsourced) ModPart).getCompanyName());
+        } 
+        
     }    
     
 }
