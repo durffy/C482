@@ -19,7 +19,7 @@ import javafx.collections.ObservableList;
  * @author cjd
  */
 public class Product {
-    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    public static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     private IntegerProperty id,
             stock,
             min,
@@ -124,11 +124,15 @@ public class Product {
         return associatedParts;
     }
 
-    public void addAssociatedParts(ObservableList<Part> parts) {
-        this.associatedParts= parts;
+    public static void addAssociatedParts(ObservableList<Part> parts) {
+        for(Part part : parts){
+            if(!associatedParts.contains(part)){
+                associatedParts.add(part);
+            }
+        }
     }
     
-    public void deleteAssociatedParts(Part associatedPart) {
-        this.associatedParts.remove(associatedParts);
+    public static void deleteAssociatedParts(Part associatedPart) {
+        associatedParts.remove(associatedPart);
     }
 }
