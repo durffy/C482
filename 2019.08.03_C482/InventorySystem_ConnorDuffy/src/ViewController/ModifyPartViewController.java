@@ -5,6 +5,9 @@
  */
 package ViewController;
 
+import Model.InHouse;
+import Model.Inventory;
+import Model.Part;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,12 +44,8 @@ public class ModifyPartViewController implements Initializable {
     @FXML private TextField FieldSourceID;
     
     @FXML private Label LabelSoruceID;
-
-
-
-
-
-
+    
+    static int PartIndex;
     
     public void RadioButtonInHousePressed(){
         
@@ -88,7 +87,16 @@ public class ModifyPartViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        //todo: add object type check here
+        Part part = Inventory.lookupPart(PartIndex);
+        FieldID.setText(Integer.toString(part.getId()));
+        FieldName.setText(part.getName());
+        FieldStock.setText(Integer.toString(part.getStock()));
+        FieldPrice.setText(Double.toString(part.getPrice()));
+        FieldMin.setText(Integer.toString(part.getMin()));
+        FieldMax.setText(Integer.toString(part.getMax()));
+        //FieldSourceID.setText(Integer.toString(part.getI)); 
     }    
     
 }
