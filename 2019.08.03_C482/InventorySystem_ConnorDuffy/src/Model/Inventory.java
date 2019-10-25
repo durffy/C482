@@ -5,6 +5,7 @@ import Model.InHouse;
 import Model.Outsourced;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -82,14 +83,27 @@ public class Inventory {
      * @param selectedPart the Part object to delete from the ObservableList allParts
      */
     public static void deletePart(Part selectedPart){
-        selectedPart.setName("Deleted");
-        selectedPart.setMax(0);
-        selectedPart.setMin(0);
-        selectedPart.setPrice(0.0);
-        selectedPart.setStock(0);
+                
+        boolean relationship_exists = false;
         
-        allParts.set(selectedPart.getId(), selectedPart);
+        for(Product p : Inventory.allProducts){
+            if(p.associatedParts.contains(selectedPart)){
+                relationship_exists = true;
+            }
+        }
+        
+        if(!relationship_exists){
+            selectedPart.setName("Deleted");
+            selectedPart.setMax(0);
+            selectedPart.setMin(0);
+            selectedPart.setPrice(0.0);
+            selectedPart.setStock(0);
 
+            allParts.set(selectedPart.getId(), selectedPart);
+        }else if(relationship_exists){
+            //TODO: alerts here
+        }
+        
     }
     
     /**
