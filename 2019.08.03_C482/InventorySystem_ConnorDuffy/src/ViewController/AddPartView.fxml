@@ -94,7 +94,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </TextField>
-            <Label fx:id="LabelSoruceID" text="Machine Id">
+            <Label fx:id="LabelSourceID" text="Machine Id">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>

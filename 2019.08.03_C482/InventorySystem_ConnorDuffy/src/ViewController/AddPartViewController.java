@@ -107,8 +107,7 @@ public class AddPartViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        
+
         LabelSourceID.setText("Machine Id");
     }    
     
