@@ -12,6 +12,7 @@ import Model.Part;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -46,17 +47,20 @@ public class ModifyPartViewController implements Initializable {
     @FXML private TextField FieldMax;
     @FXML private TextField FieldSourceID;
     
-    @FXML private Label LabelSoruceID;
+    @FXML private Label LabelSourceID;
     
     static int PartIndex;
     private Part ModPart;
+    private boolean InHouse = true;
     
     public void RadioButtonInHousePressed(){
-        
+        LabelSourceID.setText("Machine Id");
+        InHouse = true;      
     }
     
     public void RadioButtonOutsourcedPressed(){
-        
+        LabelSourceID.setText("Company Name");
+        InHouse = false;
     }
     
     public void ButtonCancel(ActionEvent event) throws IOException{
@@ -79,9 +83,9 @@ public class ModifyPartViewController implements Initializable {
         ModPart.setMax(Integer.parseInt(FieldMax.getText()));
         
         if(ModPart instanceof InHouse){
-            //ModPart.setMachineId(Integer.parseInt(FieldSourceID.getText()));
+            ((InHouse) ModPart).setMachineId(Integer.parseInt(FieldSourceID.getText()));
         }if(ModPart instanceof Outsourced){
-            //ModPart.setCompanyName(FieldSourceID.getText());
+            ((Outsourced) ModPart).setCompanyName(FieldSourceID.getText());
         }
         
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
@@ -91,11 +95,6 @@ public class ModifyPartViewController implements Initializable {
         window.show();
         
     }
-    
-    
-    
-    
-    
     
     
     /**
@@ -114,8 +113,12 @@ public class ModifyPartViewController implements Initializable {
         
         if(ModPart instanceof InHouse){
             FieldSourceID.setText(Integer.toString(((InHouse) ModPart).getMachineId()));
+            LabelSourceID.setText("Machine ID");
+            InHouse = true;
         }if(ModPart instanceof Outsourced){
             FieldSourceID.setText(((Outsourced) ModPart).getCompanyName());
+            LabelSourceID.setText("Source ID");
+            InHouse = false;
         } 
         
     }    
