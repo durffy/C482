@@ -47,17 +47,17 @@ public class AddPartViewController implements Initializable {
     @FXML private TextField FieldMax;
     @FXML private TextField FieldSourceID;
     
-    @FXML private Label LabelSoruceID;
+    @FXML private Label LabelSourceID;
 
     private boolean InHouse = true;
     
     public void RadioButtonInHousePressed(){
-        LabelSoruceID.setText("Machine Id");
+        LabelSourceID.setText("Machine Id");
         InHouse = true;
     }
     
     public void RadioButtonOutsourcedPressed(){
-        LabelSoruceID.setText("Company Name");
+        LabelSourceID.setText("Company Name");
         InHouse = false;
     }
     
@@ -109,7 +109,7 @@ public class AddPartViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
-        LabelSoruceID.setText("Machine Id");
+        LabelSourceID.setText("Machine Id");
     }    
     
 }
