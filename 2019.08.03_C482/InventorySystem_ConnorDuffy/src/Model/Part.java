@@ -44,7 +44,7 @@ public abstract class Part {
         this.price = new SimpleDoubleProperty();
         this.price.set(price);
     }
-    
+
     public IntegerProperty getIdProperty(){
         return id;
     }

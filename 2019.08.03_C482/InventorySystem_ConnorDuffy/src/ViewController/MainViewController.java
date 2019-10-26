@@ -119,6 +119,10 @@ public class MainViewController implements Initializable {
     
     public void ButtonModifyProduct(ActionEvent event) throws IOException{
         
+        Product product = ProductsTable.getSelectionModel().getSelectedItem();
+        
+        ModifyProductViewController.ProductIndex = product.getId();
+        
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyProductView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

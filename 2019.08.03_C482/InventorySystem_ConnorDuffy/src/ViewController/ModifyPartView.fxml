@@ -21,7 +21,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <RadioButton fx:id="RadioBtnInHouse" mnemonicParsing="false" selected="true" text="InHouse">
+            <RadioButton fx:id="RadioBtnInHouse" mnemonicParsing="false" onAction="#RadioButtonInHousePressed" selected="true" text="InHouse">
                <toggleGroup>
                   <ToggleGroup fx:id="RadioBtnToggleGroup" />
                </toggleGroup>
@@ -29,7 +29,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </RadioButton>
-            <RadioButton fx:id="RadioBtnOutSourced" mnemonicParsing="false" text="OutSourced" toggleGroup="$RadioBtnToggleGroup">
+            <RadioButton fx:id="RadioBtnOutSourced" mnemonicParsing="false" onAction="#RadioButtonOutsourcedPressed" text="OutSourced" toggleGroup="$RadioBtnToggleGroup">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -94,7 +94,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </TextField>
-            <Label fx:id="LabelSoruceID" text="SourceID">
+            <Label fx:id="LabelSourceID" text="SourceID">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -104,7 +104,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </TextField>
-            <Button mnemonicParsing="false" onAction="#ButtonAdd" text="Add">
+            <Button mnemonicParsing="false" onAction="#ButtonSave" text="Save">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>

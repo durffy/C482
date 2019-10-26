@@ -12,6 +12,7 @@ import Model.Part;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -46,17 +47,20 @@ public class ModifyPartViewController implements Initializable {
     @FXML private TextField FieldMax;
     @FXML private TextField FieldSourceID;
     
-    @FXML private Label LabelSoruceID;
+    @FXML private Label LabelSourceID;
     
     static int PartIndex;
     private Part ModPart;
+    private boolean InHouse;
     
     public void RadioButtonInHousePressed(){
-        
+        LabelSourceID.setText("Machine Id");
+        InHouse = true;      
     }
     
     public void RadioButtonOutsourcedPressed(){
-        
+        LabelSourceID.setText("Company Name");
+        InHouse = false;
     }
     
     public void ButtonCancel(ActionEvent event) throws IOException{
@@ -70,19 +74,25 @@ public class ModifyPartViewController implements Initializable {
     }
     
     public void ButtonSave(ActionEvent event) throws IOException{
-        //TODO: add method call, object reference, and logic
-        
-        ModPart.setName(FieldName.getText());
-        ModPart.setStock(Integer.parseInt(FieldStock.getText()));
-        ModPart.setPrice(Double.parseDouble(FieldPrice.getText()));
-        ModPart.setMin(Integer.parseInt(FieldMin.getText()));
-        ModPart.setMax(Integer.parseInt(FieldMax.getText()));
-        
-        if(ModPart instanceof InHouse){
-            //ModPart.setMachineId(Integer.parseInt(FieldSourceID.getText()));
-        }if(ModPart instanceof Outsourced){
-            //ModPart.setCompanyName(FieldSourceID.getText());
+
+        Part newPart = null;
+
+        int id = Integer.parseInt(FieldID.getText());
+        String name = FieldName.getText();
+        int stock = Integer.parseInt(FieldStock.getText());
+        double price = Double.parseDouble(FieldPrice.getText());
+        int min = Integer.parseInt(FieldMin.getText());
+        int max = Integer.parseInt(FieldMax.getText());
+        String sourceId = FieldSourceID.getText();
+         
+        if(InHouse){
+            newPart = new InHouse(id, name, price, stock, min, max, Integer.parseInt(sourceId));
         }
+        else if(!InHouse){
+            newPart = new Outsourced(id, name, price, stock, min, max,sourceId);
+        }
+        
+        Inventory.updatePart(PartIndex, newPart);
         
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         Scene scene = new Scene(root);
@@ -91,11 +101,6 @@ public class ModifyPartViewController implements Initializable {
         window.show();
         
     }
-    
-    
-    
-    
-    
     
     
     /**
@@ -114,8 +119,13 @@ public class ModifyPartViewController implements Initializable {
         
         if(ModPart instanceof InHouse){
             FieldSourceID.setText(Integer.toString(((InHouse) ModPart).getMachineId()));
-        }if(ModPart instanceof Outsourced){
+            LabelSourceID.setText("Machine ID");
+            InHouse = true;
+        }
+        if(ModPart instanceof Outsourced){
             FieldSourceID.setText(((Outsourced) ModPart).getCompanyName());
+            LabelSourceID.setText("Source ID");
+            InHouse = false;
         } 
         
     }    

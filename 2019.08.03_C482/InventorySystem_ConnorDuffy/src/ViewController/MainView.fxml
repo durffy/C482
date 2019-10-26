@@ -16,7 +16,7 @@
             <Label text="Parts" />
             <Button mnemonicParsing="false" onAction="#ButtonSearchParts" text="Search" />
             <TextField fx:id="PartsSearch" onAction="#ButtonSearchParts" />
-            <TableView fx:id="Parts" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="PartsTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
                 <TableColumn fx:id="PartId" prefWidth="75.0" text="id" />
                 <TableColumn fx:id="PartName" prefWidth="75.0" text="name" />
@@ -37,7 +37,7 @@
             <Label text="Products" />
             <Button mnemonicParsing="false" onAction="#ButtonSearchProducts" text="Search" />
             <TextField fx:id="ProductsSearch" onAction="#ButtonSearchProducts" />
-            <TableView fx:id="Products" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="ProductsTable" prefHeight="200.0" prefWidth="200.0">
                <columns>
                   <TableColumn fx:id="ProductId" prefWidth="75.0" text="id" />
                   <TableColumn fx:id="ProductName" prefWidth="75.0" text="name" />
