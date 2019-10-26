@@ -85,7 +85,11 @@ public class ModifyProductViewController implements Initializable {
     
     
     public void ButtonSearchPart(ActionEvent event) throws IOException{
-        //TODO
+        
+        ObservableList<Part> parts = Inventory.lookupPart(PartSeach.getText());
+        
+        TablePartSearch.setItems(parts);
+        
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
