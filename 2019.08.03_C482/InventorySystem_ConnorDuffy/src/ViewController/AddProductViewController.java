@@ -71,7 +71,7 @@ public class AddProductViewController implements Initializable {
     public void ButtonAddProduct(ActionEvent event) throws IOException{
         
         String name = ProductName.getText();
-        int id = Integer.parseInt(ProductID.getText());
+        int id = Inventory.allProducts.size();
         int stock = Integer.parseInt(ProductStock.getText());
         double price = Double.parseDouble(ProductPrice.getText());
         int min = Integer.parseInt(ProductMin.getText());
