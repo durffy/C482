@@ -5,9 +5,14 @@
  */
 package ViewController;
 
+import Model.Inventory;
+import Model.Part;
+import Model.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -28,17 +34,18 @@ import javafx.stage.Stage;
 public class AddProductViewController implements Initializable {
     
     @FXML private TextField PartSeach;
-    @FXML private TableView TablePartSearch;
-    @FXML private TableColumn PartSearchID;
-    @FXML private TableColumn PartSearchName;
-    @FXML private TableColumn PartSearchStock;
-    @FXML private TableColumn PartSearchPrice;
     
-    @FXML private TableView ProductPart;
-    @FXML private TableColumn ProductPartID;
-    @FXML private TableColumn ProductPartName;
-    @FXML private TableColumn ProductPartStock;
-    @FXML private TableColumn ProductPartPrice;
+    @FXML private TableView<Part> TablePartSearch;
+    @FXML private TableColumn<Part, Integer> PartSearchID;
+    @FXML private TableColumn<Part, String> PartSearchName;
+    @FXML private TableColumn<Part, Integer> PartSearchStock;
+    @FXML private TableColumn<Part, Double> PartSearchPrice;
+    
+    @FXML private TableView<Part> TableProductParts;
+    @FXML private TableColumn<Part, Integer> ProductPartID;
+    @FXML private TableColumn<Part, String> ProductPartName;
+    @FXML private TableColumn<Part, Integer> ProductPartStock;
+    @FXML private TableColumn<Part, Double> ProductPartPrice;
     
     @FXML private TextField ProductID;
     @FXML private TextField ProductName;
@@ -47,11 +54,8 @@ public class AddProductViewController implements Initializable {
     @FXML private TextField ProductMin;
     @FXML private TextField ProductMax;
     
-    
-    
-    
-    
-    
+    private ObservableList<Part> ProductParts = FXCollections.observableArrayList();
+    private Product NewProduct;
     
     
     public void ButtonCancel(ActionEvent event) throws IOException{
@@ -65,8 +69,19 @@ public class AddProductViewController implements Initializable {
     }
     
     public void ButtonAddProduct(ActionEvent event) throws IOException{
-        //TODO: add method call, object reference, and logic
-                        
+        
+        String name = ProductName.getText();
+        int id = Integer.parseInt(ProductID.getText());
+        int stock = Integer.parseInt(ProductStock.getText());
+        double price = Double.parseDouble(ProductPrice.getText());
+        int min = Integer.parseInt(ProductMin.getText());
+        int max = Integer.parseInt(ProductMax.getText());
+        
+        Product p = new Product(id, name, price, stock, min, max);
+        p.addAssociatedParts(ProductParts);
+
+        Inventory.allProducts.add(p);
+        
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -74,37 +89,46 @@ public class AddProductViewController implements Initializable {
         window.show();
         
     }
-    
-    
-    
-    
+
     
     
     public void ButtonSearchPart(ActionEvent event) throws IOException{
-        //TODO
+    
+        
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
-        //TODO
+        
+        ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
+        
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
         //TODO
     }
     
-    
-    
-    
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+       
+        PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
+        PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
+        PartSearchPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
+        
+
+        TablePartSearch.setItems(Inventory.allParts);
+        
+        ProductPartID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
+        ProductPartName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
+        ProductPartStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
+        ProductPartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
+        
+        TableProductParts.setItems(ProductParts);
     }    
     
 }
