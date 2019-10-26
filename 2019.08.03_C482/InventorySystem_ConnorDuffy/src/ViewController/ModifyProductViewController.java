@@ -97,7 +97,9 @@ public class ModifyProductViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
-        //TODO
+        
+        ProductParts.remove((ProductPart.getSelectionModel().getSelectedItem()));
+        
     }
     
     
