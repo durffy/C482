@@ -77,6 +77,7 @@ public class AddProductViewController implements Initializable {
         int min = Integer.parseInt(ProductMin.getText());
         int max = Integer.parseInt(ProductMax.getText());
         
+        //todo: Adding a product needs to have InHouse and Outsourced options
         Product p = new Product(id, name, price, stock, min, max);
         p.addAssociatedParts(ProductParts);
 
@@ -93,18 +94,23 @@ public class AddProductViewController implements Initializable {
     
     
     public void ButtonSearchPart(ActionEvent event) throws IOException{
-    
+        
+        ObservableList<Part> parts = Inventory.lookupPart(PartSeach.getText());
+        
+        TablePartSearch.setItems(parts);
         
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
-        
+
         ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
         
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
-        //TODO
+        
+        ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
+        
     }
     
 
@@ -120,7 +126,6 @@ public class AddProductViewController implements Initializable {
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         PartSearchPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-
         TablePartSearch.setItems(Inventory.allParts);
         
         ProductPartID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
