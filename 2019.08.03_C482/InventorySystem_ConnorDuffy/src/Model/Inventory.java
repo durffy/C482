@@ -73,7 +73,7 @@ public class Inventory {
      */
     public static void updatePart(int index, Part selectedPart){
         //TODO: may need to add an option to delete the 'old part'
-        allParts.add(index, selectedPart);
+        allParts.set(index, selectedPart);
     }
     
     /**
