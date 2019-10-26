@@ -113,7 +113,14 @@ public class ModifyProductViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ModProduct = Inventory.lookupProduct(ProductIndex);
         ProductParts.addAll(ModProduct.getAllAssociatedParts());
-                
+
+        ProductID.setText(Integer.toString(ModProduct.getId()));
+        ProductName.setText(ModProduct.getName());
+        ProductStock.setText(Integer.toString(ModProduct.getStock()));
+        ProductPrice.setText(Double.toString(ModProduct.getPrice()));
+        ProductMin.setText(Integer.toString(ModProduct.getMin()));
+        ProductMax.setText(Integer.toString(ModProduct.getMax()));
+        
         PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
