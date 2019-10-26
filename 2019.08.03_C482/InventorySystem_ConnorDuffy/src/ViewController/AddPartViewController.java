@@ -75,7 +75,7 @@ public class AddPartViewController implements Initializable {
         //TODO: add method call, object reference, and logic
         
         String name = FieldName.getText();
-        int id = Integer.parseInt(FieldID.getText());
+        int id = Inventory.allParts.size();
         int stock = Integer.parseInt(FieldStock.getText());
         double price = Double.parseDouble(FieldPrice.getText());
         int min = Integer.parseInt(FieldMin.getText());

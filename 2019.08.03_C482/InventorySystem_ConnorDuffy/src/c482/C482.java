@@ -20,8 +20,7 @@ public class C482 extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource(
-                "/ViewController/MainView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
         
         Scene scene = new Scene(root);
         
