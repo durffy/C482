@@ -19,7 +19,7 @@ import javafx.collections.ObservableList;
  * @author cjd
  */
 public class Product {
-    public static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    private static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     private IntegerProperty id,
             stock,
             min,
