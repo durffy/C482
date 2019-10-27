@@ -19,7 +19,7 @@ import javafx.collections.ObservableList;
  * @author cjd
  */
 public class Product {
-    private static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     private IntegerProperty id,
             stock,
             min,
@@ -45,6 +45,10 @@ public class Product {
         
         this.price = new SimpleDoubleProperty();
         this.price.set(price);
+    }
+
+    public Product() {
+        //To change body of generated methods, choose Tools | Templates.
     }
 
     public IntegerProperty getIdProperty(){
@@ -121,7 +125,7 @@ public class Product {
     
 
     public ObservableList<Part> getAllAssociatedParts() {
-        return associatedParts;
+        return this.associatedParts;
     }
 
     /**
@@ -130,15 +134,19 @@ public class Product {
      * 
      * @param parts an ObservableList<Part>
      */
-    public static void addAssociatedParts(ObservableList<Part> parts) {
+    public void addAssociatedParts(ObservableList<Part> parts) {
         for(Part part : parts){
-            if(!associatedParts.contains(part)){
-                associatedParts.add(part);
+            if(!this.associatedParts.contains(part)){
+                this.associatedParts.add(part);
             }
         }
     }
     
-    public static void deleteAssociatedParts(Part associatedPart) {
-        associatedParts.remove(associatedPart);
+    public void deleteAssociatedParts(Part associatedPart) {
+        this.associatedParts.remove(associatedPart);
+    }
+
+    public void setProductParts(ObservableList<Part> parts) {
+        this.associatedParts = parts;
     }
 }

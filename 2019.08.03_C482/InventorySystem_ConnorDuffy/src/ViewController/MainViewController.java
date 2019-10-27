@@ -121,7 +121,7 @@ public class MainViewController implements Initializable {
         
         Product product = ProductsTable.getSelectionModel().getSelectedItem();
         
-        ModifyProductViewController.ProductIndex = product.getId();
+        ModifyProductViewController.ProductIndex=product.getId();
         
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyProductView.fxml"));
         Scene scene = new Scene(root);
@@ -170,7 +170,7 @@ public class MainViewController implements Initializable {
         ProductPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
         ProductsTable.setItems(Inventory.getAllProducts());
-        
+
         
     }
 }
