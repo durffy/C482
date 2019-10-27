@@ -41,7 +41,7 @@ public class ModifyProductViewController implements Initializable {
     @FXML private TableColumn<Part, Integer> PartSearchStock;
     @FXML private TableColumn<Part, Double> PartSearchPrice;
     
-    @FXML private TableView<Part> ProductPart;
+    @FXML private TableView<Part> TableProductParts;
     @FXML private TableColumn<Part, Integer> ProductPartID;
     @FXML private TableColumn<Part, String> ProductPartName;
     @FXML private TableColumn<Part, Integer> ProductPartStock;
@@ -94,11 +94,12 @@ public class ModifyProductViewController implements Initializable {
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
         ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
+        TableProductParts.setItems(ProductParts);
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
         
-        ProductParts.remove((ProductPart.getSelectionModel().getSelectedItem()));
+        ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
         
     }
     
@@ -112,8 +113,14 @@ public class ModifyProductViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ModProduct = Inventory.lookupProduct(ProductIndex);
-        ProductParts.addAll(ModProduct.getAllAssociatedParts());
-                
+        
+        ProductID.setText(Integer.toString(ModProduct.getId()));
+        ProductName.setText(ModProduct.getName());
+        ProductStock.setText(Integer.toString(ModProduct.getStock()));
+        ProductPrice.setText(Double.toString(ModProduct.getPrice()));
+        ProductMin.setText(Integer.toString(ModProduct.getMin()));
+        ProductMax.setText(Integer.toString(ModProduct.getMax()));
+        
         PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
@@ -126,7 +133,7 @@ public class ModifyProductViewController implements Initializable {
         ProductPartStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         ProductPartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-        ProductPart.setItems(ProductParts);
+        TableProductParts.setItems(Inventory.lookupProduct(ProductIndex).getAllAssociatedParts());
     }    
     
 }

@@ -87,7 +87,7 @@ public class Inventory {
         boolean relationship_exists = false;
         
         for(Product p : Inventory.allProducts){
-            if(p.associatedParts.contains(selectedPart)){
+            if(p.getAllAssociatedParts().contains(selectedPart)){
                 relationship_exists = true;
             }
         }
