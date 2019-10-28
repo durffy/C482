@@ -21,6 +21,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -79,15 +81,30 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonModifyPart(ActionEvent event) throws IOException{
-        Part part = PartsTable.getSelectionModel().getSelectedItem();
         
-        ModifyPartViewController.PartIndex = part.getId();
         
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyPartView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        try {
+            
+            Part part = PartsTable.getSelectionModel().getSelectedItem();
+
+            ModifyPartViewController.PartIndex = part.getId();
+
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyPartView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+
+        }catch(Exception e){
+            
+            e = new IOException("No item was selected from the Parts List");
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("No item was selected from the Parts List");
+
+            alert.showAndWait();
+            
+        }
         
     }
     
@@ -119,15 +136,28 @@ public class MainViewController implements Initializable {
     
     public void ButtonModifyProduct(ActionEvent event) throws IOException{
         
-        Product product = ProductsTable.getSelectionModel().getSelectedItem();
+        try{
+
+            Product product = ProductsTable.getSelectionModel().getSelectedItem();
+
+            ModifyProductViewController.ProductIndex=product.getId();
+
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyProductView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
         
-        ModifyProductViewController.ProductIndex=product.getId();
-        
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/ModifyProductView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        }catch(Exception e){
+            
+            e = new IOException("No item was selected from the Products List");
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("No item was selected from the Products List");
+
+            alert.showAndWait();
+            
+        }
     }
     
     public void ButtonDeleteProduct(ActionEvent event){
