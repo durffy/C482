@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -117,6 +118,46 @@ public abstract class Part {
         this.price.set(price);
     }
     
+    public boolean checkValidPart(int min, int max, int stock){
+        
+        boolean issue = false;
+        
+        //check if min is more than max
+        if(min > max){
+            
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Min must be below the Max limit");
+            alert.showAndWait();
+            
+            issue = true;
+        }
+        
+        //check if stock is less than min
+        if(stock < min){
+            
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Stock must be equal or above the min limit");
+            alert.showAndWait();
+            
+            issue = true;
+            
+        }
+        
+        //check if stock is more than max       
+        if(stock > max){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Stock must be equal or below the max limit");
+            alert.showAndWait();
+            
+            issue = true;
+        }
+        
+        return issue;
+        
+    }
     
 }
 
