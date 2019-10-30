@@ -25,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import Model.Product;
+import javafx.scene.control.Alert;
 
 /**
  * FXML Controller class
@@ -59,7 +60,7 @@ public class ModifyProductViewController implements Initializable {
     static int ProductIndex;
 
 
-    
+
     public void ButtonCancel(ActionEvent event) throws IOException{
                 
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
@@ -72,14 +73,28 @@ public class ModifyProductViewController implements Initializable {
     
     public void ButtonSaveProduct(ActionEvent event) throws IOException{
         
-        ModProduct.addAssociatedParts(ProductParts);
+        boolean issue = false;
+        String name = ProductName.getText();
+        //int id = Inventory.allProducts.size();
+        int stock = Integer.parseInt(ProductStock.getText());
+        double price = Double.parseDouble(ProductPrice.getText());
+        int min = Integer.parseInt(ProductMin.getText());
+        int max = Integer.parseInt(ProductMax.getText());
+ 
+        issue = ModProduct.checkValidProduct(name, price, stock, min, max, ProductParts);
+
+        if(!issue){
+            
+            ModProduct.addAssociatedParts(ProductParts);
         
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
-        
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+            
+        }
+     
     }
     
     
@@ -100,6 +115,7 @@ public class ModifyProductViewController implements Initializable {
     public void ButtonDeletePart(ActionEvent event) throws IOException{
         
         ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
+        TableProductParts.setItems(ProductParts);
         
     }
     

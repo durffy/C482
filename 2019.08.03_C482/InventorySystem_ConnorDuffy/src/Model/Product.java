@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -149,4 +150,74 @@ public class Product {
     public void setProductParts(ObservableList<Part> parts) {
         this.associatedParts = parts;
     }
+    
+    public boolean checkValidProduct(String name, double price, int stock, int min, int max, ObservableList<Part> ProductParts){
+        
+        boolean issue = false;
+        double partsPrice = 0;
+        
+        //check if product cost is more than parts cost
+        for(Part p: ProductParts){
+            partsPrice += p.getPrice();
+            
+        }
+        
+        if(partsPrice > price){
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Pricing issue Parts Price cost more than Product.\n\rSuggested Price: " + partsPrice);
+            alert.showAndWait();
+            
+            issue = true;
+            
+        }
+        
+        //check if min is more than max
+        if(min > max){
+            
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Min must be below the Max limit");
+            alert.showAndWait();
+            
+            issue = true;
+        }
+        
+        //check if stock is less than min
+        if(stock < min){
+            
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Stock must be equal or above the min limit");
+            alert.showAndWait();
+            
+            issue = true;
+            
+        }
+        
+        //check if stock is more than max       
+        if(stock > max){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Stock must be equal or below the max limit");
+            alert.showAndWait();
+            
+            issue = true;
+        }
+        
+        //check if parts exist for the product
+        if(ProductParts.isEmpty()){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Products must be associated with one part");
+            alert.showAndWait();
+            
+            issue = true;
+            
+        }
+        
+        return issue;
+        
+    }
+    
 }
