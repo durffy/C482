@@ -77,10 +77,22 @@ public class ModifyProductViewController implements Initializable {
         int min = Integer.parseInt(ProductMin.getText());
         int max = Integer.parseInt(ProductMax.getText());
         int stock = Integer.parseInt(ProductStock.getText());
-               
+ 
+        //check if min is more than max
+        if(min > max){
+            
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Min must be below the Max limit");
+            alert.showAndWait();
+            
+            issue = true;
+        }
+        
+        //check if stock is less than min
         if(stock < min){
             
-            //check if stock is less than min
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Stock must be equal or above the min limit");
             alert.showAndWait();
@@ -88,9 +100,10 @@ public class ModifyProductViewController implements Initializable {
             issue = true;
             
         }
+        
+        //check if stock is more than max       
         if(stock > max){
             
-            //check if stock is more than max
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Stock must be equal or below the max limit");
             alert.showAndWait();
@@ -98,7 +111,7 @@ public class ModifyProductViewController implements Initializable {
             issue = true;
         }
 
-        
+
         if(!issue){
             ModProduct.addAssociatedParts(ProductParts);
         
