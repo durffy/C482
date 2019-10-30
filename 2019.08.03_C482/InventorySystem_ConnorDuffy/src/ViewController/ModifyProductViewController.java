@@ -74,55 +74,17 @@ public class ModifyProductViewController implements Initializable {
     public void ButtonSaveProduct(ActionEvent event) throws IOException{
         
         boolean issue = false;
+        String name = ProductName.getText();
+        //int id = Inventory.allProducts.size();
+        int stock = Integer.parseInt(ProductStock.getText());
+        double price = Double.parseDouble(ProductPrice.getText());
         int min = Integer.parseInt(ProductMin.getText());
         int max = Integer.parseInt(ProductMax.getText());
-        int stock = Integer.parseInt(ProductStock.getText());
  
-        //check if min is more than max
-        if(min > max){
-            
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Min must be below the Max limit");
-            alert.showAndWait();
-            
-            issue = true;
-        }
-        
-        //check if stock is less than min
-        if(stock < min){
-            
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be equal or above the min limit");
-            alert.showAndWait();
-            
-            issue = true;
-            
-        }
-        
-        //check if stock is more than max       
-        if(stock > max){
-            
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be equal or below the max limit");
-            alert.showAndWait();
-            
-            issue = true;
-        }
-        
-        //check if parts exist for the product
-        if(ProductParts.isEmpty()){
-            
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Products must be associated with one part");
-            alert.showAndWait();
-            
-            issue = true;
-            
-        }
+        issue = ModProduct.checkValidProduct(name, price, stock, min, max, ProductParts);
 
         if(!issue){
+            
             ModProduct.addAssociatedParts(ProductParts);
         
             Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
@@ -130,6 +92,7 @@ public class ModifyProductViewController implements Initializable {
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
             window.setScene(scene);
             window.show();
+            
         }
      
     }
