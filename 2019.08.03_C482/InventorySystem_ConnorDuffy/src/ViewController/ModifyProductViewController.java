@@ -110,7 +110,17 @@ public class ModifyProductViewController implements Initializable {
             
             issue = true;
         }
-
+        
+        //check if parts exist for the product
+        if(ProductParts.isEmpty()){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Products must be associated with one part");
+            alert.showAndWait();
+            
+            issue = true;
+            
+        }
 
         if(!issue){
             ModProduct.addAssociatedParts(ProductParts);
