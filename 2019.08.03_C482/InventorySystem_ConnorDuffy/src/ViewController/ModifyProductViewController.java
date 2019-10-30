@@ -25,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import Model.Product;
+import javafx.scene.control.Alert;
 
 /**
  * FXML Controller class
@@ -59,7 +60,7 @@ public class ModifyProductViewController implements Initializable {
     static int ProductIndex;
 
 
-    
+
     public void ButtonCancel(ActionEvent event) throws IOException{
                 
         Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
@@ -72,14 +73,32 @@ public class ModifyProductViewController implements Initializable {
     
     public void ButtonSaveProduct(ActionEvent event) throws IOException{
         
-        ModProduct.addAssociatedParts(ProductParts);
+        int min = Integer.parseInt(ProductMin.getText());
+        int max = Integer.parseInt(ProductMax.getText());
+        int stock = Integer.parseInt(ProductStock.getText());
         
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        System.out.println(min);
+        System.out.println(max);
+        System.out.println(stock);
         
+        if(!(min <=stock)){
+            
+            //alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Stock must be above the minimum stock limit");
+
+            alert.showAndWait();
+            
+        }else{
+            ModProduct.addAssociatedParts(ProductParts);
+        
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        }
+     
     }
     
     
