@@ -73,23 +73,33 @@ public class ModifyProductViewController implements Initializable {
     
     public void ButtonSaveProduct(ActionEvent event) throws IOException{
         
+        boolean issue = false;
         int min = Integer.parseInt(ProductMin.getText());
         int max = Integer.parseInt(ProductMax.getText());
         int stock = Integer.parseInt(ProductStock.getText());
-        
-        System.out.println(min);
-        System.out.println(max);
-        System.out.println(stock);
-        
-        if(!(min <=stock)){
+               
+        if(stock < min){
             
-            //alert
+            //check if stock is less than min
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be above the minimum stock limit");
-
+            alert.setContentText("Stock must be equal or above the min limit");
             alert.showAndWait();
             
-        }else{
+            issue = true;
+            
+        }
+        if(stock > max){
+            
+            //check if stock is more than max
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Stock must be equal or below the max limit");
+            alert.showAndWait();
+            
+            issue = true;
+        }
+
+        
+        if(!issue){
             ModProduct.addAssociatedParts(ProductParts);
         
             Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
