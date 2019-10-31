@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.util.Optional;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,6 +15,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -144,7 +147,19 @@ public class Product {
     }
     
     public void deleteAssociatedParts(Part associatedPart) {
-        this.associatedParts.remove(associatedPart);
+        
+        Alert deletePartAlert = new Alert(AlertType.CONFIRMATION);
+        deletePartAlert.setTitle("Confirmation Dialog");
+        deletePartAlert.setHeaderText("Look, a Confirmation Dialog");
+        deletePartAlert.setContentText("Are you ok with this?");
+
+        Optional<ButtonType> result = deletePartAlert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            this.associatedParts.remove(associatedPart); 
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+ 
     }
 
     public void setProductParts(ObservableList<Part> parts) {
@@ -161,7 +176,7 @@ public class Product {
             partsPrice += p.getPrice();
             
         }
-        
+
         if(partsPrice > price){
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -214,6 +229,16 @@ public class Product {
             
             issue = true;
             
+        }
+        
+        //check if product has a name
+        if((name.isEmpty())){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Product must have a Name");
+            alert.showAndWait();
+            
+            issue = true;
         }
         
         return issue;
