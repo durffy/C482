@@ -99,8 +99,6 @@ public class MainViewController implements Initializable {
 
         }catch(Exception e){
             
-            e = new IOException("No item was selected from the Parts List");
-
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("No item was selected from the Parts List");
 
@@ -164,8 +162,6 @@ public class MainViewController implements Initializable {
         
         }catch(Exception e){
             
-            e = new IOException("No item was selected from the Products List");
-
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("No item was selected from the Products List");
 
