@@ -150,8 +150,8 @@ public class Product {
         
         Alert deletePartAlert = new Alert(AlertType.CONFIRMATION);
         deletePartAlert.setTitle("Confirmation Dialog");
-        deletePartAlert.setHeaderText("Look, a Confirmation Dialog");
-        deletePartAlert.setContentText("Are you ok with this?");
+        deletePartAlert.setHeaderText("Delete the Associated Part");
+        deletePartAlert.setContentText("OK to Continue?");
 
         Optional<ButtonType> result = deletePartAlert.showAndWait();
         if (result.get() == ButtonType.OK){
