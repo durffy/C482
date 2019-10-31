@@ -11,6 +11,7 @@ import Model.Part;
 import Model.Product;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -109,8 +111,20 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event){
-        Part part = PartsTable.getSelectionModel().getSelectedItem();
-        Inventory.deletePart(part);
+        
+        Alert deletePartAlert = new Alert(AlertType.CONFIRMATION);
+        deletePartAlert.setTitle("Confirmation Dialog");
+        deletePartAlert.setHeaderText("Look, a Confirmation Dialog");
+        deletePartAlert.setContentText("Are you ok with this?");
+
+        Optional<ButtonType> result = deletePartAlert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Part part = PartsTable.getSelectionModel().getSelectedItem();
+            Inventory.deletePart(part);
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+
     }
     
     
@@ -161,8 +175,21 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeleteProduct(ActionEvent event){
-        Product product = ProductsTable.getSelectionModel().getSelectedItem();
-        Inventory.deleteProduct(product);
+        
+        Alert deleteProductAlert = new Alert(AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Look, a Confirmation Dialog");
+        deleteProductAlert.setContentText("Are you ok with this?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Product product = ProductsTable.getSelectionModel().getSelectedItem();
+            Inventory.deleteProduct(product);
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+        
+
     }
     
     /**
