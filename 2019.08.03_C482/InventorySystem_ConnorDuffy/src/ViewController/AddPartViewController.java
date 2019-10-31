@@ -69,7 +69,7 @@ public class AddPartViewController implements Initializable {
         
         Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
         deleteProductAlert.setTitle("Confirmation Dialog");
-        deleteProductAlert.setHeaderText("Cancel Part Creation");
+        deleteProductAlert.setHeaderText("Cancel Part Creation. Your part wil not be saved.");
         deleteProductAlert.setContentText("OK to continue?");
 
         Optional<ButtonType> result = deleteProductAlert.showAndWait();

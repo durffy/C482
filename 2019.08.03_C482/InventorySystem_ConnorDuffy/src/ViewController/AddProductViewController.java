@@ -65,7 +65,7 @@ public class AddProductViewController implements Initializable {
 
         Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
         deleteProductAlert.setTitle("Confirmation Dialog");
-        deleteProductAlert.setHeaderText("Cancel Product Creation");
+        deleteProductAlert.setHeaderText("Cancel Product Creation. Your work will not be saved.");
         deleteProductAlert.setContentText("OK to continue?");
 
         Optional<ButtonType> result = deleteProductAlert.showAndWait();
