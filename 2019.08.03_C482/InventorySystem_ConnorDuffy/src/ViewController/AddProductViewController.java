@@ -10,6 +10,7 @@ import Model.Part;
 import Model.Product;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -59,12 +62,24 @@ public class AddProductViewController implements Initializable {
     
     
     public void ButtonCancel(ActionEvent event) throws IOException{
-                
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Cancel Product Creation");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
+        
+        if (result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+       
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
         
     }
     
