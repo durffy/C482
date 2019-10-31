@@ -125,12 +125,15 @@ public class ModifyPartViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         ModPart = Inventory.lookupPart(PartIndex);
-        FieldID.setText(Integer.toString(ModPart.getId()));
+
         FieldName.setText(ModPart.getName());
         FieldStock.setText(Integer.toString(ModPart.getStock()));
         FieldPrice.setText(Double.toString(ModPart.getPrice()));
         FieldMin.setText(Integer.toString(ModPart.getMin()));
         FieldMax.setText(Integer.toString(ModPart.getMax()));
+        
+        FieldID.setDisable(true);
+        FieldID.setPromptText("Auto Generated: "+ ModPart.getId());
         
         if(ModPart instanceof InHouse){
             FieldSourceID.setText(Integer.toString(((InHouse) ModPart).getMachineId()));

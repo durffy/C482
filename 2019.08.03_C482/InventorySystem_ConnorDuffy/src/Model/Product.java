@@ -148,17 +148,7 @@ public class Product {
     
     public void deleteAssociatedParts(Part associatedPart) {
         
-        Alert deletePartAlert = new Alert(AlertType.CONFIRMATION);
-        deletePartAlert.setTitle("Confirmation Dialog");
-        deletePartAlert.setHeaderText("Delete the Associated Part");
-        deletePartAlert.setContentText("OK to Continue?");
-
-        Optional<ButtonType> result = deletePartAlert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            this.associatedParts.remove(associatedPart); 
-        } else {
-            // ... user chose CANCEL or closed the dialog
-        }
+        this.associatedParts.remove(associatedPart); 
  
     }
 

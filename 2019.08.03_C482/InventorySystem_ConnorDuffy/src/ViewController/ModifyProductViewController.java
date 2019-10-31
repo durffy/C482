@@ -149,7 +149,9 @@ public class ModifyProductViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ModProduct = Inventory.lookupProduct(ProductIndex);
         
-        ProductID.setText(Integer.toString(ModProduct.getId()));
+        ProductID.setDisable(true);
+        ProductID.setPromptText("Auto Generated: "+ ModProduct.getId());
+
         ProductName.setText(ModProduct.getName());
         ProductStock.setText(Integer.toString(ModProduct.getStock()));
         ProductPrice.setText(Double.toString(ModProduct.getPrice()));

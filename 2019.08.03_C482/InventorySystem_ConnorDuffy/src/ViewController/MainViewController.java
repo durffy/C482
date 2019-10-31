@@ -109,19 +109,10 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event){
-        
-        Alert deletePartAlert = new Alert(AlertType.CONFIRMATION);
-        deletePartAlert.setTitle("Confirmation Dialog");
-        deletePartAlert.setHeaderText("Delete Product and Associated Parts");
-        deletePartAlert.setContentText("OK to Continue?");
 
-        Optional<ButtonType> result = deletePartAlert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            Part part = PartsTable.getSelectionModel().getSelectedItem();
-            Inventory.deletePart(part);
-        } else {
-            // ... user chose CANCEL or closed the dialog
-        }
+        //see Inventory.deletePart() for alerts
+        Part part = PartsTable.getSelectionModel().getSelectedItem();
+        Inventory.deletePart(part);
 
     }
     
@@ -174,8 +165,8 @@ public class MainViewController implements Initializable {
         
         Alert deleteProductAlert = new Alert(AlertType.CONFIRMATION);
         deleteProductAlert.setTitle("Confirmation Dialog");
-        deleteProductAlert.setHeaderText("Look, a Confirmation Dialog");
-        deleteProductAlert.setContentText("Are you ok with this?");
+        deleteProductAlert.setHeaderText("ALERT! you've selected to delete a product, deleting a product removes the part associations.");
+        deleteProductAlert.setContentText("OK to Continue?");
 
         Optional<ButtonType> result = deleteProductAlert.showAndWait();
         if (result.get() == ButtonType.OK){
@@ -202,9 +193,10 @@ public class MainViewController implements Initializable {
             for (int i = 0; i < 10; i++) {
                 Part part = new InHouse(Inventory.allParts.size(), "Part" + String.valueOf(i), (double) i, i, i, i, i);
                 Inventory.allParts.add((InHouse) part);
-                
+
                 Product product = new Product(Inventory.allProducts.size(), "Product" + String.valueOf(i), (double) i, i, i, i);
                 Inventory.allProducts.add(product);
+                
             }
             loaded = true;
         }
