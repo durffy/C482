@@ -3,9 +3,11 @@ package Model;
 
 import Model.InHouse;
 import Model.Outsourced;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -101,7 +103,22 @@ public class Inventory {
 
             allParts.set(selectedPart.getId(), selectedPart);
         }else if(relationship_exists){
-            //TODO: alerts here
+            
+            Alert deletePartAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            deletePartAlert.setTitle("Confirmation Dialog");
+            deletePartAlert.setHeaderText("Delete Product and Associated Parts");
+            deletePartAlert.setContentText("OK to Continue?");
+
+            Optional<ButtonType> result = deletePartAlert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                
+            //get the products associated
+            //delete the part from the products
+            
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+            
         }
         
     }
