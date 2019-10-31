@@ -114,8 +114,8 @@ public class MainViewController implements Initializable {
         
         Alert deletePartAlert = new Alert(AlertType.CONFIRMATION);
         deletePartAlert.setTitle("Confirmation Dialog");
-        deletePartAlert.setHeaderText("Look, a Confirmation Dialog");
-        deletePartAlert.setContentText("Are you ok with this?");
+        deletePartAlert.setHeaderText("Delete Product and Associated Parts");
+        deletePartAlert.setContentText("OK to Continue?");
 
         Optional<ButtonType> result = deletePartAlert.showAndWait();
         if (result.get() == ButtonType.OK){
