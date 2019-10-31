@@ -86,6 +86,11 @@ public class ModifyProductViewController implements Initializable {
         if(!issue){
             
             ModProduct.addAssociatedParts(ProductParts);
+            ModProduct.setName(name);
+            ModProduct.setMin(min);
+            ModProduct.setMax(max);
+            ModProduct.setPrice(price);
+            ModProduct.setStock(stock);
         
             Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
             Scene scene = new Scene(root);
