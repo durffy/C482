@@ -104,13 +104,15 @@ public class Inventory {
             deletePartAlert.setContentText("OK to Continue?");
 
             Optional<ButtonType> result = deletePartAlert.showAndWait();
-            selectedPart.setName("Deleted");
-            selectedPart.setMax(0);
-            selectedPart.setMin(0);
-            selectedPart.setPrice(0.0);
-            selectedPart.setStock(0);
+            if (result.get() == ButtonType.OK){
+                selectedPart.setName("Deleted");
+                selectedPart.setMax(0);
+                selectedPart.setMin(0);
+                selectedPart.setPrice(0.0);
+                selectedPart.setStock(0);
 
-            allParts.set(selectedPart.getId(), selectedPart);
+                allParts.set(selectedPart.getId(), selectedPart);
+            }
             
         }else if(relationship_exists){
             
@@ -135,9 +137,7 @@ public class Inventory {
 
                 allParts.set(selectedPart.getId(), selectedPart);
             
-            } else {
-                // ... user chose CANCEL or closed the dialog
-            }
+            } 
             
         }
         
