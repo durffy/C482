@@ -92,7 +92,7 @@ public class ModifyPartViewController implements Initializable {
 
         Part newPart = null;
 
-        int id = Integer.parseInt(FieldID.getText());
+        //int id = Integer.parseInt(FieldID.getText());
         String name = FieldName.getText();
         int stock = Integer.parseInt(FieldStock.getText());
         double price = Double.parseDouble(FieldPrice.getText());
@@ -101,10 +101,10 @@ public class ModifyPartViewController implements Initializable {
         String sourceId = FieldSourceID.getText();
          
         if(InHouse){
-            newPart = new InHouse(id, name, price, stock, min, max, Integer.parseInt(sourceId));
+            newPart = new InHouse(ModPart.getId(), name, price, stock, min, max, Integer.parseInt(sourceId));
         }
         else if(!InHouse){
-            newPart = new Outsourced(id, name, price, stock, min, max,sourceId);
+            newPart = new Outsourced(ModPart.getId(), name, price, stock, min, max,sourceId);
         }
         
         Inventory.updatePart(PartIndex, newPart);
