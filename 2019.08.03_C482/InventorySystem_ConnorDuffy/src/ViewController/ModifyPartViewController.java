@@ -143,6 +143,7 @@ public class ModifyPartViewController implements Initializable {
         if(ModPart instanceof Outsourced){
             FieldSourceID.setText(((Outsourced) ModPart).getCompanyName());
             LabelSourceID.setText("Source ID");
+            RadioBtnOutSourced.setSelected(true);
             InHouse = false;
         } 
         
