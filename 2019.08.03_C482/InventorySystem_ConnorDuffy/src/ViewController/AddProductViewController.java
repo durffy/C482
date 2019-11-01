@@ -85,6 +85,9 @@ public class AddProductViewController implements Initializable {
     
     public void ButtonAddProduct(ActionEvent event) throws IOException{
         
+        Product checkProduct = new Product();
+        boolean issue = false;
+        
         String name = ProductName.getText();
         int id = Inventory.allProducts.size();
         int stock = Integer.parseInt(ProductStock.getText());
@@ -92,17 +95,23 @@ public class AddProductViewController implements Initializable {
         int min = Integer.parseInt(ProductMin.getText());
         int max = Integer.parseInt(ProductMax.getText());
         
-        //todo: Adding a product needs to have InHouse and Outsourced options
-        Product p = new Product(id, name, price, stock, min, max);
-        p.addAssociatedParts(ProductParts);
-
-        Inventory.allProducts.add(p);
         
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        issue = checkProduct.checkValidProduct(name, price, stock, min, max, ProductParts);
+
+        if(!issue){
+            
+            Product p = new Product(id, name, price, stock, min, max);
+            p.addAssociatedParts(ProductParts);
+
+            Inventory.allProducts.add(p);
+
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+            
+        }
         
     }
 
@@ -123,8 +132,16 @@ public class AddProductViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Deleting Part.");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
         
-        ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
+        if (result.get() == ButtonType.OK){
+            ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
+        }
         
     }
     
@@ -134,7 +151,6 @@ public class AddProductViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
        
         PartSearchID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         PartSearchName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
@@ -149,6 +165,7 @@ public class AddProductViewController implements Initializable {
         ProductPartPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
         TableProductParts.setItems(ProductParts);
+        
     }    
     
 }

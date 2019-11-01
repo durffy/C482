@@ -143,9 +143,18 @@ public class ModifyProductViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Deleting Part.");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
         
-        ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
-        TableProductParts.setItems(ProductParts);
+        if (result.get() == ButtonType.OK){
+            ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
+            TableProductParts.setItems(ProductParts); 
+        }
+
         
     }
     

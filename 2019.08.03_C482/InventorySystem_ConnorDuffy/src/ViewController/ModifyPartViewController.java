@@ -89,31 +89,38 @@ public class ModifyPartViewController implements Initializable {
     }
     
     public void ButtonSave(ActionEvent event) throws IOException{
-
+        
+        boolean issue = false;
         Part newPart = null;
 
-        //int id = Integer.parseInt(FieldID.getText());
+        int id = ModPart.getId();
         String name = FieldName.getText();
         int stock = Integer.parseInt(FieldStock.getText());
         double price = Double.parseDouble(FieldPrice.getText());
         int min = Integer.parseInt(FieldMin.getText());
         int max = Integer.parseInt(FieldMax.getText());
         String sourceId = FieldSourceID.getText();
-         
-        if(InHouse){
-            newPart = new InHouse(ModPart.getId(), name, price, stock, min, max, Integer.parseInt(sourceId));
-        }
-        else if(!InHouse){
-            newPart = new Outsourced(ModPart.getId(), name, price, stock, min, max,sourceId);
-        }
         
-        Inventory.updatePart(PartIndex, newPart);
+        Part partCheck = new Outsourced(id, name, price, stock, min, max, sourceId);
+        issue = partCheck.checkValidPart(min, max, stock);
         
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        if(!issue){
+
+            if(InHouse){
+                newPart = new InHouse(id, name, price, stock, min, max, Integer.parseInt(sourceId));
+            }
+            else if(!InHouse){
+                newPart = new Outsourced(id, name, price, stock, min, max,sourceId);
+            }
+
+            Inventory.updatePart(PartIndex, newPart);
+
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        }
         
     }
     
