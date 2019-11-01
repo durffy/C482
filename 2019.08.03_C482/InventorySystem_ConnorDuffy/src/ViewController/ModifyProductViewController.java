@@ -127,8 +127,19 @@ public class ModifyProductViewController implements Initializable {
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
-        ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
-        TableProductParts.setItems(ProductParts);
+        
+        String selectedPart = TablePartSearch.getSelectionModel().getSelectedItem().getName();
+        
+        if(!(selectedPart == "Deleted")){
+            ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
+            TableProductParts.setItems(ProductParts);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Cannot Add Part, Part is Deleted");
+            alert.showAndWait();
+        }
+        
+
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
