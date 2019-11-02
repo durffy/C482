@@ -128,17 +128,28 @@ public class ModifyProductViewController implements Initializable {
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
         
-        String selectedPart = TablePartSearch.getSelectionModel().getSelectedItem().getName();
+        Part selectedPart = TablePartSearch.getSelectionModel().getSelectedItem();
         
-        if(!(selectedPart == "Deleted")){
-            ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
-            TableProductParts.setItems(ProductParts);
-        }else{
+        if(ProductParts.contains(selectedPart)){
+            
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Cannot Add Part, Part is Deleted");
-            alert.showAndWait();
-        }
+            alert.setContentText("Cannot Add Part. \n\rThe Product/Part relationship already exists.\r");
+            alert.showAndWait();      
+                
+        }else{
         
+            if(!(selectedPart.getName() == "Deleted")){
+                
+                ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
+                TableProductParts.setItems(ProductParts);
+                
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Cannot Add Part, Part is Deleted");
+                alert.showAndWait();
+            }
+            
+        }
 
     }
     
@@ -184,7 +195,7 @@ public class ModifyProductViewController implements Initializable {
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         PartSearchPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-        TablePartSearch.setItems(Inventory.allParts);
+        TablePartSearch.setItems(Inventory.getAllParts());
         
         ProductPartID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         ProductPartName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());

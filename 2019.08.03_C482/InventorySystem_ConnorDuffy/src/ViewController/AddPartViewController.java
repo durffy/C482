@@ -92,7 +92,7 @@ public class AddPartViewController implements Initializable {
         boolean issue = false;
         
         String name = FieldName.getText();
-        int id = Inventory.allParts.size();
+        int id = Inventory.getAllParts().size();
         int stock = Integer.parseInt(FieldStock.getText());
         double price = Double.parseDouble(FieldPrice.getText());
         int min = Integer.parseInt(FieldMin.getText());
@@ -107,11 +107,11 @@ public class AddPartViewController implements Initializable {
             if(InHouse){
                 int sid = Integer.parseInt(sourceId);
                 Part p = new InHouse(id, name, price, stock, min, max, sid);
-                Inventory.allParts.add(p);
+                Inventory.addPart((InHouse) p);
             }else if(!InHouse){
 
                 Part p = new Outsourced(id, name, price, stock, min, max, sourceId);
-                Inventory.allParts.add(p);
+                Inventory.addPart((Outsourced) p);
             }
 
             Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));

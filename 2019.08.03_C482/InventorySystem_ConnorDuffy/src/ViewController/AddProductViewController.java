@@ -89,7 +89,7 @@ public class AddProductViewController implements Initializable {
         boolean issue = false;
         
         String name = ProductName.getText();
-        int id = Inventory.allProducts.size();
+        int id = Inventory.getAllProducts().size();
         int stock = Integer.parseInt(ProductStock.getText());
         double price = Double.parseDouble(ProductPrice.getText());
         int min = Integer.parseInt(ProductMin.getText());
@@ -97,13 +97,13 @@ public class AddProductViewController implements Initializable {
         
         
         issue = checkProduct.checkValidProduct(name, price, stock, min, max, ProductParts);
-
+        
         if(!issue){
             
             Product p = new Product(id, name, price, stock, min, max);
             p.addAssociatedParts(ProductParts);
 
-            Inventory.allProducts.add(p);
+            Inventory.addProduct(p);
 
             Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
             Scene scene = new Scene(root);
@@ -126,9 +126,19 @@ public class AddProductViewController implements Initializable {
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
-
-        ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
         
+        Part selectedPart = TablePartSearch.getSelectionModel().getSelectedItem();
+        
+        if(ProductParts.contains(selectedPart)){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Cannot Add Part. \n\rThe Product/Part relationship already exists.\r");
+            alert.showAndWait();      
+                
+        }else{
+          ProductParts.add(selectedPart);          
+        }
+  
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
@@ -157,7 +167,7 @@ public class AddProductViewController implements Initializable {
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         PartSearchPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-        TablePartSearch.setItems(Inventory.allParts);
+        TablePartSearch.setItems(Inventory.getAllParts());
         
         ProductPartID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         ProductPartName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());

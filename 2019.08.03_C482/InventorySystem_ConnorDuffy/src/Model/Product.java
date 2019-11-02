@@ -141,6 +141,7 @@ public class Product {
     public void addAssociatedParts(ObservableList<Part> parts) {
         for(Part part : parts){
             if(!this.associatedParts.contains(part)){
+                System.out.println(this.associatedParts.contains(part));
                 this.associatedParts.add(part);
             }
         }

@@ -191,11 +191,11 @@ public class MainViewController implements Initializable {
         if(!loaded){
             
             for (int i = 0; i < 10; i++) {
-                Part part = new InHouse(Inventory.allParts.size(), "Part" + String.valueOf(i), (double) i, i, i, i, i);
-                Inventory.allParts.add((InHouse) part);
+                Part part = new InHouse(Inventory.getAllParts().size(), "Part" + String.valueOf(i), (double) i, i, i, i, i);
+                Inventory.addPart((InHouse) part);
 
-                Product product = new Product(Inventory.allProducts.size(), "Product" + String.valueOf(i), (double) i, i, i, i);
-                Inventory.allProducts.add(product);
+                Product product = new Product(Inventory.getAllProducts().size(), "Product" + String.valueOf(i), (double) i, i, i, i);
+                Inventory.addProduct(product);
                 
             }
             loaded = true;

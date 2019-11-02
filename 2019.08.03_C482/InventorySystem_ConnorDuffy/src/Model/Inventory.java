@@ -15,8 +15,8 @@ import javafx.scene.control.ButtonType;
  */
 public class Inventory {
     
-    public static ObservableList<Part> allParts = FXCollections.observableArrayList();
-    public static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
     
     /**
      * Adds a new part to the ObservableList allParts to create new items in 
