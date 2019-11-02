@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +23,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -65,40 +68,59 @@ public class ModifyPartViewController implements Initializable {
     
     public void ButtonCancel(ActionEvent event) throws IOException{
                 
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Cancel Part Modification. Your work will not be saved.");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
+        
+        if (result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+       
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
         
     }
     
     public void ButtonSave(ActionEvent event) throws IOException{
-
+        
+        boolean issue = false;
         Part newPart = null;
 
-        int id = Integer.parseInt(FieldID.getText());
+        int id = ModPart.getId();
         String name = FieldName.getText();
         int stock = Integer.parseInt(FieldStock.getText());
         double price = Double.parseDouble(FieldPrice.getText());
         int min = Integer.parseInt(FieldMin.getText());
         int max = Integer.parseInt(FieldMax.getText());
         String sourceId = FieldSourceID.getText();
-         
-        if(InHouse){
-            newPart = new InHouse(id, name, price, stock, min, max, Integer.parseInt(sourceId));
-        }
-        else if(!InHouse){
-            newPart = new Outsourced(id, name, price, stock, min, max,sourceId);
-        }
         
-        Inventory.updatePart(PartIndex, newPart);
+        Part partCheck = new Outsourced(id, name, price, stock, min, max, sourceId);
+        issue = partCheck.checkValidPart(min, max, stock);
         
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        if(!issue){
+
+            if(InHouse){
+                newPart = new InHouse(id, name, price, stock, min, max, Integer.parseInt(sourceId));
+            }
+            else if(!InHouse){
+                newPart = new Outsourced(id, name, price, stock, min, max,sourceId);
+            }
+
+            Inventory.updatePart(PartIndex, newPart);
+
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        }
         
     }
     
@@ -110,12 +132,15 @@ public class ModifyPartViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         ModPart = Inventory.lookupPart(PartIndex);
-        FieldID.setText(Integer.toString(ModPart.getId()));
+
         FieldName.setText(ModPart.getName());
         FieldStock.setText(Integer.toString(ModPart.getStock()));
         FieldPrice.setText(Double.toString(ModPart.getPrice()));
         FieldMin.setText(Integer.toString(ModPart.getMin()));
         FieldMax.setText(Integer.toString(ModPart.getMax()));
+        
+        FieldID.setDisable(true);
+        FieldID.setPromptText("Auto Generated: "+ ModPart.getId());
         
         if(ModPart instanceof InHouse){
             FieldSourceID.setText(Integer.toString(((InHouse) ModPart).getMachineId()));
@@ -125,6 +150,7 @@ public class ModifyPartViewController implements Initializable {
         if(ModPart instanceof Outsourced){
             FieldSourceID.setText(((Outsourced) ModPart).getCompanyName());
             LabelSourceID.setText("Source ID");
+            RadioBtnOutSourced.setSelected(true);
             InHouse = false;
         } 
         

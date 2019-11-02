@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.util.Optional;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,6 +15,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -138,13 +141,16 @@ public class Product {
     public void addAssociatedParts(ObservableList<Part> parts) {
         for(Part part : parts){
             if(!this.associatedParts.contains(part)){
+                System.out.println(this.associatedParts.contains(part));
                 this.associatedParts.add(part);
             }
         }
     }
     
     public void deleteAssociatedParts(Part associatedPart) {
-        this.associatedParts.remove(associatedPart);
+        
+        this.associatedParts.remove(associatedPart); 
+ 
     }
 
     public void setProductParts(ObservableList<Part> parts) {
@@ -161,7 +167,7 @@ public class Product {
             partsPrice += p.getPrice();
             
         }
-        
+
         if(partsPrice > price){
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -188,7 +194,7 @@ public class Product {
             
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be equal or above the min limit");
+            alert.setContentText("Stock must be equal or above the Min limit");
             alert.showAndWait();
             
             issue = true;
@@ -199,7 +205,7 @@ public class Product {
         if(stock > max){
             
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be equal or below the max limit");
+            alert.setContentText("Stock must be equal or below the Max limit");
             alert.showAndWait();
             
             issue = true;
@@ -214,6 +220,16 @@ public class Product {
             
             issue = true;
             
+        }
+        
+        //check if product has a name
+        if((name.isEmpty())){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Product must have a Name");
+            alert.showAndWait();
+            
+            issue = true;
         }
         
         return issue;

@@ -138,7 +138,7 @@ public abstract class Part {
             
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be equal or above the min limit");
+            alert.setContentText("Stock must be equal or above the Min limit");
             alert.showAndWait();
             
             issue = true;
@@ -149,7 +149,7 @@ public abstract class Part {
         if(stock > max){
             
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Stock must be equal or below the max limit");
+            alert.setContentText("Stock must be equal or below the Max limit");
             alert.showAndWait();
             
             issue = true;

@@ -11,6 +11,7 @@ import Model.Part;
 import Model.Product;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -97,8 +99,6 @@ public class MainViewController implements Initializable {
 
         }catch(Exception e){
             
-            e = new IOException("No item was selected from the Parts List");
-
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("No item was selected from the Parts List");
 
@@ -109,8 +109,11 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeletePart(ActionEvent event){
+
+        //see Inventory.deletePart() for alerts
         Part part = PartsTable.getSelectionModel().getSelectedItem();
         Inventory.deletePart(part);
+
     }
     
     
@@ -150,8 +153,6 @@ public class MainViewController implements Initializable {
         
         }catch(Exception e){
             
-            e = new IOException("No item was selected from the Products List");
-
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("No item was selected from the Products List");
 
@@ -161,8 +162,21 @@ public class MainViewController implements Initializable {
     }
     
     public void ButtonDeleteProduct(ActionEvent event){
-        Product product = ProductsTable.getSelectionModel().getSelectedItem();
-        Inventory.deleteProduct(product);
+        
+        Alert deleteProductAlert = new Alert(AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("ALERT! you've selected to delete a product, deleting a product removes the part associations.");
+        deleteProductAlert.setContentText("OK to Continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Product product = ProductsTable.getSelectionModel().getSelectedItem();
+            Inventory.deleteProduct(product);
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+        
+
     }
     
     /**
@@ -177,11 +191,12 @@ public class MainViewController implements Initializable {
         if(!loaded){
             
             for (int i = 0; i < 10; i++) {
-                Part part = new InHouse(Inventory.allParts.size(), "Part" + String.valueOf(i), (double) i, i, i, i, i);
-                Inventory.allParts.add((InHouse) part);
+                Part part = new InHouse(Inventory.getAllParts().size(), "Part" + String.valueOf(i), (double) i, i, i, i, i);
+                Inventory.addPart((InHouse) part);
+
+                Product product = new Product(Inventory.getAllProducts().size(), "Product" + String.valueOf(i), (double) i, i, i, i);
+                Inventory.addProduct(product);
                 
-                Product product = new Product(Inventory.allProducts.size(), "Product" + String.valueOf(i), (double) i, i, i, i);
-                Inventory.allProducts.add(product);
             }
             loaded = true;
         }

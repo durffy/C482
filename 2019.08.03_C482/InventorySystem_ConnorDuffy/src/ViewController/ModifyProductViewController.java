@@ -25,7 +25,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import Model.Product;
+import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  * FXML Controller class
@@ -63,11 +65,23 @@ public class ModifyProductViewController implements Initializable {
 
     public void ButtonCancel(ActionEvent event) throws IOException{
                 
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Cancel Product Modification. Your work will not be saved.");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
+        
+        if (result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+       
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
         
     }
     
@@ -86,6 +100,11 @@ public class ModifyProductViewController implements Initializable {
         if(!issue){
             
             ModProduct.addAssociatedParts(ProductParts);
+            ModProduct.setName(name);
+            ModProduct.setMin(min);
+            ModProduct.setMax(max);
+            ModProduct.setPrice(price);
+            ModProduct.setStock(stock);
         
             Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
             Scene scene = new Scene(root);
@@ -108,14 +127,45 @@ public class ModifyProductViewController implements Initializable {
     }
     
     public void ButtonAddPart(ActionEvent event) throws IOException{
-        ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
-        TableProductParts.setItems(ProductParts);
+        
+        Part selectedPart = TablePartSearch.getSelectionModel().getSelectedItem();
+        
+        if(ProductParts.contains(selectedPart)){
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Cannot Add Part. \n\rThe Product/Part relationship already exists.\r");
+            alert.showAndWait();      
+                
+        }else{
+        
+            if(!(selectedPart.getName() == "Deleted")){
+                
+                ProductParts.add(TablePartSearch.getSelectionModel().getSelectedItem());
+                TableProductParts.setItems(ProductParts);
+                
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Cannot Add Part, Part is Deleted");
+                alert.showAndWait();
+            }
+            
+        }
+
     }
     
     public void ButtonDeletePart(ActionEvent event) throws IOException{
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Deleting Part.");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
         
-        ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
-        TableProductParts.setItems(ProductParts);
+        if (result.get() == ButtonType.OK){
+            ProductParts.remove((TableProductParts.getSelectionModel().getSelectedItem()));
+            TableProductParts.setItems(ProductParts); 
+        }
+
         
     }
     
@@ -129,8 +179,11 @@ public class ModifyProductViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ModProduct = Inventory.lookupProduct(ProductIndex);
+        ProductParts = ModProduct.getAllAssociatedParts();
         
-        ProductID.setText(Integer.toString(ModProduct.getId()));
+        ProductID.setDisable(true);
+        ProductID.setPromptText("Auto Generated: "+ ModProduct.getId());
+
         ProductName.setText(ModProduct.getName());
         ProductStock.setText(Integer.toString(ModProduct.getStock()));
         ProductPrice.setText(Double.toString(ModProduct.getPrice()));
@@ -142,7 +195,7 @@ public class ModifyProductViewController implements Initializable {
         PartSearchStock.setCellValueFactory(cellData -> cellData.getValue().getStockProperty().asObject());
         PartSearchPrice.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty().asObject());
         
-        TablePartSearch.setItems(Inventory.allParts);
+        TablePartSearch.setItems(Inventory.getAllParts());
         
         ProductPartID.setCellValueFactory(cellData -> cellData.getValue().getIdProperty().asObject());
         ProductPartName.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());

@@ -3,9 +3,11 @@ package Model;
 
 import Model.InHouse;
 import Model.Outsourced;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -13,8 +15,8 @@ import javafx.scene.control.Alert;
  */
 public class Inventory {
     
-    public static ObservableList<Part> allParts = FXCollections.observableArrayList();
-    public static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
     
     /**
      * Adds a new part to the ObservableList allParts to create new items in 
@@ -85,23 +87,58 @@ public class Inventory {
     public static void deletePart(Part selectedPart){
                 
         boolean relationship_exists = false;
-        
+        ObservableList<Product> productsToDeleteFrom = FXCollections.observableArrayList();
+                
         for(Product p : Inventory.allProducts){
             if(p.getAllAssociatedParts().contains(selectedPart)){
+                productsToDeleteFrom.add(p);
                 relationship_exists = true;
             }
         }
         
         if(!relationship_exists){
-            selectedPart.setName("Deleted");
-            selectedPart.setMax(0);
-            selectedPart.setMin(0);
-            selectedPart.setPrice(0.0);
-            selectedPart.setStock(0);
+            
+            Alert deletePartAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            deletePartAlert.setTitle("Confirmation Dialog");
+            deletePartAlert.setHeaderText("Delete Part.");
+            deletePartAlert.setContentText("OK to Continue?");
 
-            allParts.set(selectedPart.getId(), selectedPart);
+            Optional<ButtonType> result = deletePartAlert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                selectedPart.setName("Deleted");
+                selectedPart.setMax(0);
+                selectedPart.setMin(0);
+                selectedPart.setPrice(0.0);
+                selectedPart.setStock(0);
+
+                allParts.set(selectedPart.getId(), selectedPart);
+            }
+            
         }else if(relationship_exists){
-            //TODO: alerts here
+            
+            Alert deletePartAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            deletePartAlert.setTitle("Confirmation Dialog");
+            deletePartAlert.setHeaderText("Deleting this Part will remove the part from the associated Products.");
+            deletePartAlert.setContentText("OK to Continue?");
+
+            Optional<ButtonType> result = deletePartAlert.showAndWait();
+            
+            if (result.get() == ButtonType.OK){
+            
+                for(Product pr : productsToDeleteFrom){
+                    pr.deleteAssociatedParts(selectedPart);
+                }
+                
+                selectedPart.setName("Deleted");
+                selectedPart.setMax(0);
+                selectedPart.setMin(0);
+                selectedPart.setPrice(0.0);
+                selectedPart.setStock(0);
+
+                allParts.set(selectedPart.getId(), selectedPart);
+            
+            } 
+            
         }
         
     }

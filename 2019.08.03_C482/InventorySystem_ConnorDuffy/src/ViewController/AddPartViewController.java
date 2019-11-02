@@ -10,9 +10,11 @@ import Model.InHouse;
 import Model.Outsourced;
 import Model.Part;
 import Model.Part;
+import Model.Product;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +23,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -62,41 +66,62 @@ public class AddPartViewController implements Initializable {
     }
     
     public void ButtonCancel(ActionEvent event) throws IOException{
-                
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
+        
+        Alert deleteProductAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteProductAlert.setTitle("Confirmation Dialog");
+        deleteProductAlert.setHeaderText("Cancel Part Creation. Your part wil not be saved.");
+        deleteProductAlert.setContentText("OK to continue?");
+
+        Optional<ButtonType> result = deleteProductAlert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
         window.show();
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+        
+
         
     }
     
     public void ButtonAdd(ActionEvent event) throws IOException{
         //TODO: add method call, object reference, and logic
+        boolean issue = false;
         
         String name = FieldName.getText();
-        int id = Inventory.allParts.size();
+        int id = Inventory.getAllParts().size();
         int stock = Integer.parseInt(FieldStock.getText());
         double price = Double.parseDouble(FieldPrice.getText());
         int min = Integer.parseInt(FieldMin.getText());
         int max = Integer.parseInt(FieldMax.getText());
         String sourceId = FieldSourceID.getText();
         
-        if(InHouse){
-            int sid = Integer.parseInt(sourceId);
-            Part p = new InHouse(id, name, price, stock, min, max, sid);
-            Inventory.allParts.add(p);
-        }else if(!InHouse){
+        Part partCheck = new Outsourced(id, name, price, stock, min, max, sourceId); 
+        issue = partCheck.checkValidPart(min, max, stock);
+        
+        if(!issue){
+
+            if(InHouse){
+                int sid = Integer.parseInt(sourceId);
+                Part p = new InHouse(id, name, price, stock, min, max, sid);
+                Inventory.addPart((InHouse) p);
+            }else if(!InHouse){
+
+                Part p = new Outsourced(id, name, price, stock, min, max, sourceId);
+                Inventory.addPart((Outsourced) p);
+            }
+
+            Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show(); 
             
-            Part p = new Outsourced(id, name, price, stock, min, max, sourceId);
-            Inventory.allParts.add(p);
         }
-                
-        Parent root = FXMLLoader.load(getClass().getResource("/ViewController/MainView.fxml"));
-        Scene scene = new Scene(root);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+
         
     }
 
@@ -109,6 +134,7 @@ public class AddPartViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         LabelSourceID.setText("Machine Id");
+        
     }    
     
 }
